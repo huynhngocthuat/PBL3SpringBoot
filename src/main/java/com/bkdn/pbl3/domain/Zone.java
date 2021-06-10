@@ -15,7 +15,7 @@ import java.util.Set;
 @Table(name = "Zone")
 public class Zone implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    //@GeneratedValue(strategy = GenerationType.AUTO)
     private String zoneId;
     @Column(nullable = false)
     private String zoneName;
