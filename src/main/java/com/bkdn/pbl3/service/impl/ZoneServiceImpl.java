@@ -25,13 +25,28 @@ public class ZoneServiceImpl implements ZoneService {
     }
 
     @Override
+    public void delete(Zone zone) {
+        zoneRepository.delete(zone);
+    }
+
+    @Override
     public Optional<Zone> findById(String s) {
         return zoneRepository.findById(s);
     }
 
     @Override
-    public void delete(Zone zone) {
-        zoneRepository.delete(zone);
+    public void deleteById(String s) {
+        zoneRepository.deleteById(s);
+    }
+
+    @Override
+    public List<Zone> findByZoneNameContaining(String name) {
+        return zoneRepository.findByZoneNameContaining(name);
+    }
+
+    @Override
+    public Page<Zone> findByZoneNameContaining(String name, Pageable pageable) {
+        return zoneRepository.findByZoneNameContaining(name, pageable);
     }
 
     @Override

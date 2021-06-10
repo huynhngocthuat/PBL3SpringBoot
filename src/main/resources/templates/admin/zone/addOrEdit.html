@@ -29,13 +29,15 @@
                                    aria-describedby="zoneIdHid" placeholder="Zone ID" readonly>
                             <input th:unless="${zone.isEdit}" type="text" class="form-control" th:field="*{zoneId}" id="zoneId"
                                    aria-describedby="zoneIdHid" placeholder="Zone ID" >
-                            <small id="zoneIdHid" class="form-text text-muted">Zone id is required</small>
+                            <small th:if="${#fields.hasErrors('zoneId')}" id="zoneIdHid"
+                                   class="form-text text-muted">Zone id is required</small>
                         </div>
                         <div class="form-group">
                             <label for="zoneName">Name</label>
                             <input type="text" class="form-control" th:field="*{zoneName}" id="zoneName"
                                    aria-describedby="zoneNameHid" placeholder="Zone Name">
-                            <small id="zoneNamHid" class="form-text text-muted">Name is required</small>
+                            <small th:if="${#fields.hasErrors('zoneName')}" id="zoneNamHid"
+                                   class="form-text text-muted">Name is required</small>
                         </div>
                     </div>
                     <div class="card-footer text-muted">
