@@ -25,6 +25,11 @@ public class ZoneServiceImpl implements ZoneService {
     }
 
     @Override
+    public Page<Zone> findAll(Pageable pageable) {
+        return zoneRepository.findAll(pageable);
+    }
+
+    @Override
     public void delete(Zone zone) {
         zoneRepository.delete(zone);
     }

@@ -11,6 +11,8 @@ public interface ZoneService {
 
     List<Zone> findAll();
 
+    Page<Zone> findAll(Pageable pageable);
+
     void delete(Zone zone);
 
     Optional<Zone> findById(String s);

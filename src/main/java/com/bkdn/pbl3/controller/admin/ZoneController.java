@@ -5,6 +5,10 @@ import com.bkdn.pbl3.model.ZoneDto;
 import com.bkdn.pbl3.service.ZoneService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -16,6 +20,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("admin/zone")
@@ -86,22 +92,37 @@ public class ZoneController {
         return "admin/zone/search";
     }
 
-//    @GetMapping("search/paginated")
-//    public String search(ModelMap model,
-//                         @RequestParam(name = "zoneName", required = false) String zoneName,
-//                         @RequestParam("page") Optional<Integer> page,
-//                         @RequestParam("size") Optional<Integer> size){
-//        int currentPage = page.orElse(1);
-//        int pageSize
-//        List<Zone> list;
-//        if(StringUtils.hasText(zoneName)){
-//            list = zoneService.findByZoneNameContaining(zoneName);
-//        }
-//        else {
-//            list = zoneService.findAll();
-//        }
-//        model.addAttribute("zones", list);
-//        return "admin/zone/search";
-//    }
+    @GetMapping("searchpaginated")
+    public String searchpaginated(ModelMap model,
+                         @RequestParam(name = "zoneName", required = false) String zoneName,
+                         @RequestParam("page") Optional<Integer> page,
+                         @RequestParam("size") Optional<Integer> size){
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(5);
+        Pageable pageable = PageRequest.of(currentPage-1, pageSize, Sort.by("zoneName"));
+        Page<Zone> resultPage;
+        if(StringUtils.hasText(zoneName)){
+            resultPage = zoneService.findByZoneNameContaining(zoneName, pageable);
+            model.addAttribute("zoneName", zoneName);
+        }
+        else {
+            resultPage = zoneService.findAll(pageable);
+        }
+        int totalPages = resultPage.getTotalPages();
+        if(totalPages > 0){
+            int start = Math.max(1, currentPage-2);
+            int end = Math.min(currentPage+2, totalPages);
+            if(totalPages > 5){
+                if(end == totalPages) start = end - 5;
+                else if(start==1) end = start + 5;
+            }
+            List<Integer> pageNumbers = IntStream.rangeClosed(start, end)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
+        model.addAttribute("zonePage", resultPage);
+        return "admin/zone/searchpaginated";
+    }
 
 }
