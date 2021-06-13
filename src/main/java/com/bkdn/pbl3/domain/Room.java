@@ -15,11 +15,8 @@ import java.util.Set;
 @Table(name = "Room")
 public class Room implements Serializable{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private String roomId;
-    //@Column(nullable = false)
-    //private String zoneId;
-    @Column(nullable = false)
+    @Column(columnDefinition = "nvarchar(200) not null")
     private String roomFunction;
 
     @ManyToOne

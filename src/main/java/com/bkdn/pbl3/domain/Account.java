@@ -23,8 +23,11 @@ public class Account implements Serializable {
     private String passWord;
     @Column(nullable = false)
     private int role;
+    @Column(columnDefinition = "nvarchar(100) not null")
     private String fullName;
+    @Column(columnDefinition = "nvarchar(100) not null")
     private String _class;
+    @Column(columnDefinition = "nvarchar(100) not null")
     private String faculty;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)

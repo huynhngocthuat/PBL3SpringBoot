@@ -55,7 +55,7 @@ public class ZoneController {
     public ModelAndView delete(ModelMap model, @PathVariable("zoneId") String zoneId){
         zoneService.deleteById(zoneId);
         model.addAttribute("message", "Zone is deleted!");
-        return new ModelAndView("forward:/admin/zone/search", model);
+        return new ModelAndView("forward:/admin/zone", model);
     }
 
     @PostMapping("saveOrUpdate")

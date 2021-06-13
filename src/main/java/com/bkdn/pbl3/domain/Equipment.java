@@ -16,16 +16,14 @@ import java.util.Set;
 @Table(name = "Equipment")
 public class Equipment implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+//    @GeneratedValue(strategy = GenerationType.AUTO)
     private String equipmentId;
-   // @Column(nullable = false)
-    //private String roomId;
-    @Column(nullable = false)
+    @Column(columnDefinition = "nvarchar(100) not null")
     private String equipmentName;
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
     private Date dateOfInstallation;
-    @Column(nullable = false)
+    @Column(columnDefinition = "nvarchar(100) not null")
     private String company;
 
     @ManyToOne

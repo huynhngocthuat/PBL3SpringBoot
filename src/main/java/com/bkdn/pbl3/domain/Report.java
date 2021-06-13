@@ -17,14 +17,10 @@ import java.util.Set;
 public class Report implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int reportId;
-    //@Column(nullable = false)
-//    private int accountId;
-//    @Column(nullable = false)
-//    private String equipmentId;
-//    @Column(nullable = false)
-//    private String statusId;
-    @Column(nullable = false)
+    private long reportId;
+    @Column(nullable = false, length = 200)
+    private String image;
+    @Column(columnDefinition = "nvarchar(200) not null")
     private String note;
     @Column(nullable = false)
     private int reportStatus;

@@ -15,11 +15,8 @@ import java.util.Set;
 @Table(name = "Status")
 public class Status implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private String statusId;
-    //@Column(nullable = false)
-    //private String equipmentId;
-    @Column(nullable = false)
+    @Column(columnDefinition = "nvarchar(200) not null")
     private String equipmentStatus;
 
     @ManyToOne

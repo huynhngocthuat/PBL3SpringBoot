@@ -3,6 +3,7 @@ package com.bkdn.pbl3.service.impl;
 import com.bkdn.pbl3.domain.Zone;
 import com.bkdn.pbl3.repository.ZoneRepository;
 import com.bkdn.pbl3.service.ZoneService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +15,7 @@ import java.util.Optional;
 
 @Service
 public class ZoneServiceImpl implements ZoneService {
+
     ZoneRepository zoneRepository;
     public ZoneServiceImpl(ZoneRepository zoneRepository){
         this.zoneRepository = zoneRepository;

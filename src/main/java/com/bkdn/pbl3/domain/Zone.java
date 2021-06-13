@@ -15,9 +15,8 @@ import java.util.Set;
 @Table(name = "Zone")
 public class Zone implements Serializable {
     @Id
-    //@GeneratedValue(strategy = GenerationType.AUTO)
     private String zoneId;
-    @Column(nullable = false)
+    @Column(columnDefinition = "nvarchar(100) not null")
     private String zoneName;
 
     @OneToMany(mappedBy = "zone", cascade = CascadeType.ALL)

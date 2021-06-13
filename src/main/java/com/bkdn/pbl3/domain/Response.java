@@ -17,11 +17,7 @@ public class Response implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int responseId;
-   // @Column(nullable = false)
-   // private int accountId;
-   // @Column(nullable = false)
-   // private int reportId;
-    @Column(nullable = false)
+    @Column(columnDefinition = "nvarchar(200) not null")
     private String message;
     @Column(nullable = false)
     private int responseType;
