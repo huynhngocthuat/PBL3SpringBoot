@@ -1,0 +1,74 @@
+<!doctype html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+
+   </head>
+<body>
+<main class="container">
+    <header class="row text-center">
+    </header>
+    <section class="row">
+        <div class="col-6 offset-3 mt-4">
+            <form th:action="@{/admin/equipment/saveOrUpdate}" method="post" th:object="${equipment}">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Add New Equipment</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                          <label for="equipmentId">Equipment ID :</label>
+                          <input th:if="${equipment.isEdit}" type="text" class="form-control" name="equipmentId" 
+                                 th:field="*{equipmentId}" id="equipmentIdUpdate" aria-describedby="equipmentIdHid" readonly>
+                          <input th:unless="${equipment.isEdit}" type="text" class="form-control" name="equipmentId" 
+                                 th:field="*{equipmentId}" id="equipmentId" aria-describedby="equipmentIdHid">
+                          <small th:if="${#fields.hasErrors('equipmentId')}" id="equipmentIdHid" class="form-text text-muted">Equipment ID is required</small>
+                        </div>
+                        <div class="form-group">
+                          <label for="equipmentName">Equipment Name :</label>
+                          <input th:field="*{equipmentName}" type="text" class="form-control" name="equipmentName" id="equipmentName" aria-describedby="equipmentNameHid">
+                          <small th:if="${#fields.hasErrors('equipmentName')}" id="equipmentNameHid" class="form-text text-muted">Equipment Name is required</small>
+                        </div>
+                        <div class="form-group">
+                          <label for="dateOfInstallation">Date Of Installation :</label>
+                          <input th:field="*{dateOfInstallation}" type="date" name="dateOfInstallation" class="form-control" id="dateOfInstallation"
+                                 placeholder="dd-mm-yyyy" value="" min="1997-01-01" max="2030-12-31">
+                        </div>
+                        <div class="form-group">s
+                          <label for="company">Company :</label>
+                          <input th:field="*{company}" type="text" class="form-control" name="company" id="company" aria-describedby="companyHid" placeholder="company">
+                          <small th:if="${#fields.hasErrors('company')}" id="companyHid" class="form-text text-muted">Company is required</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="roomId">Room :</label>
+                            <select class="form-control" name="roomId" id="roomId" th:field="*{roomId}">    
+                              <option th:each="item : ${rooms}" th:value="${item.roomId}"
+                                      th:text="${item.roomId}" th:select="${item.roomId == equipment.roomId}"></option>
+                            </select>
+                          </div>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <button type="reset" class="btn btn-secondary">Reset</button>
+                        <a th:href="@{/admin/equipment}" class="btn btn-success">List Zone</a>
+                        <button class="btn btn-primary"><i class="fas fa-save"></i> Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+    <footer class="row"></footer>
+</main>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -19,5 +19,5 @@ public class StatusDto {
     private String equipmentStatus;
     @NotEmpty
     private String equipmentId;
-    private boolean isEdit;
+    private Boolean isEdit = false;
 }
