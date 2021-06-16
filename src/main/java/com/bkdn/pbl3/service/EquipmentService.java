@@ -8,6 +8,8 @@ import java.util.Optional;
 public interface EquipmentService {
     List<Equipment> findAll();
 
+    Equipment getById(String s);
+
     Optional<Equipment> findById(String s);
 
     <S extends Equipment> S save(S s);

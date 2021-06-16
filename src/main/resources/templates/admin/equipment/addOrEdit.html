@@ -20,7 +20,8 @@
             <form th:action="@{/admin/equipment/saveOrUpdate}" method="post" th:object="${equipment}">
                 <div class="card">
                     <div class="card-header">
-                        <h2>Add New Equipment</h2>
+                        <h2 th:if="${equipment.isEdit}">Update Equipment</h2>
+                        <h2 th:unless="${equipment.isEdit}">Add New Equipment</h2>
                     </div>
                     <div class="card-body">
                         <div class="form-group">
@@ -57,7 +58,10 @@
                     <div class="card-footer text-muted">
                         <button type="reset" class="btn btn-secondary">Reset</button>
                         <a th:href="@{/admin/equipment}" class="btn btn-success">List Zone</a>
-                        <button class="btn btn-primary"><i class="fas fa-save"></i> Save</button>
+                        <button class="btn btn-primary"><i class="fas fa-save"></i>
+                            <span th:if="${equipment.isEdit}">Update</span>
+                            <span th:unless="${equipment.isEdit}">Save</span>
+                        </button>
                     </div>
                 </div>
             </form>

@@ -1,5 +1,6 @@
 package com.bkdn.pbl3.service.impl;
 
+import com.bkdn.pbl3.domain.Equipment;
 import com.bkdn.pbl3.domain.Room;
 import com.bkdn.pbl3.domain.Status;
 import com.bkdn.pbl3.repository.StatusRepository;
@@ -24,6 +25,11 @@ public class StatusServiceImpl implements StatusService {
     @Override
     public <S extends Status> S save(S s) {
         return statusRepository.save(s);
+    }
+
+    @Override
+    public List<Status> findStatusByEquipment(Equipment equipment) {
+        return statusRepository.findStatusByEquipment(equipment);
     }
 
     @Override

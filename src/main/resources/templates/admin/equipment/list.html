@@ -45,7 +45,7 @@
               <td th:text="${equipment.company}"></td>
               <td th:text="${equipment.room.roomId}"></td>
               <td>
-                <a th:href="@{'/admin/equipment/view/' + ${equipment.equipmentId}}" class="btn btn-outline-info"><i class="fas fa-info"></i></a>
+                <a th:href="@{'/admin/status/' + ${equipment.equipmentId}}" class="btn btn-outline-info"><i class="fas fa-info"></i></a>
                 <a th:href="@{'/admin/equipment/edit/' + ${equipment.equipmentId}}" class="btn btn-outline-warning"><i class="fas fa-edit"></i></a>
                 <a th:href="@{'/admin/equipment/delete/' + ${equipment.equipmentId}}" class="btn btn-outline-danger"><i class="fa fa-recycle"></i></a>
               </td>

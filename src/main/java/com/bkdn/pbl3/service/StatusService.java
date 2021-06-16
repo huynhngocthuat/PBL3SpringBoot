@@ -1,5 +1,6 @@
 package com.bkdn.pbl3.service;
 
+import com.bkdn.pbl3.domain.Equipment;
 import com.bkdn.pbl3.domain.Status;
 
 import java.util.List;
@@ -9,6 +10,8 @@ public interface StatusService {
     List<Status> findAll();
 
     <S extends Status> S save(S s);
+
+    List<Status> findStatusByEquipment(Equipment equipment);
 
     Optional<Status> findById(String s);
 

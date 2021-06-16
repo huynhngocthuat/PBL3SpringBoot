@@ -5,6 +5,7 @@ import com.bkdn.pbl3.repository.EquipmentRepository;
 import com.bkdn.pbl3.service.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +19,11 @@ public class EquipmentServiceImpl implements EquipmentService {
     @Override
     public List<Equipment> findAll() {
         return equipmentRepository.findAll();
+    }
+
+    @Override
+    public Equipment getById(String s) {
+        return equipmentRepository.getById(s);
     }
 
     @Override

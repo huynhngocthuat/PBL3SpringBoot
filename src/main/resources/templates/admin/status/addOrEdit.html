@@ -20,31 +20,37 @@
             <form th:action="@{/admin/status/saveOrUpdate}" method="post" th:object="${status}">
                 <div class="card">
                     <div class="card-header">
-                        <h2>Add New Status</h2>
+                        <h2 th:if="${status.isEdit}">Update Status</h2>
+                        <h2 th:unless="${status.isEdit}">Add New Status</h2>
                     </div>
                     <div class="card-body">
                         <div class="form-group">
                           <label for="statusId">Status ID :</label>
-                          <input type="text" class="form-control" name="statusId" id="statusId" aria-describedby="statusHid" placeholder="statusId">
-                          <small id="statusHid" class="form-text text-muted">Status ID is required</small>
+                          <input th:if="${status.isEdit}" type="text" class="form-control" name="statusId"
+                                 th:field="*{statusId}" id="statusIdUpdate" aria-describedby="statusHid" readonly>
+                          <input th:unless="${status.isEdit}" type="text" class="form-control" name="statusId"
+                                 th:field="*{statusId}" id="statusId" aria-describedby="statusHid">
+                          <small th:if="${#fields.hasErrors('statusId')}" id="statusHid" class="form-text text-muted">Status ID is required</small>
                         </div>
                         <div class="form-group">
                           <label for="equipmentStatus">Equipment Status :</label>
-                          <input type="text" class="form-control" name="equipmentStatus" id="equipmentStatus" aria-describedby="equipmentStatusHid" placeholder="equipmentStatus">
-                          <small id="equipmentStatusHid" class="form-text text-muted">Equiment status is required</small>
+                          <input th:field="*{equipmentStatus}" type="text" class="form-control" name="equipmentStatus" id="equipmentStatus" aria-describedby="equipmentStatusHid">
+                          <small th:if="${#fields.hasErrors('equipmentStatus')}" id="equipmentStatusHid" class="form-text text-muted">Equiment status is required</small>
                         </div>
                         <div class="form-group">
                             <label for="equipmentId">Equipment :</label>
                             <select class="form-control" name="equipmentId" id="equipmentId" th:field="*{equipmentId}">
-                              <option th:each="item : ${equipments}" th:value="${item.equipmentId}"
-                                      th:text="${item.equipmentName}" th:select="${item.equipmentId == room.equipmentId}"></option>
+                              <option th:value="${equipmentId}" th:text="${equipmentId}"></option>
                             </select>
-                          </div>
+                        </div>
                     </div>
                     <div class="card-footer text-muted">
                         <button type="reset" class="btn btn-secondary">Reset</button>
-                        <a th:href="@{/admin/status}" class="btn btn-success">List Zone</a>
-                        <button class="btn btn-primary"><i class="fas fa-save"></i> Save</button>
+                        <a th:href="@{'/admin/status/' + ${equipmentId}}" class="btn btn-success">List Zone</a>
+                        <button class="btn btn-primary"><i class="fas fa-save"></i>
+                            <span th:if="${status.isEdit}">Update</span>
+                            <span th:unless="${status.isEdit}">Save</span>
+                        </button>
                     </div>
                 </div>
             </form>
