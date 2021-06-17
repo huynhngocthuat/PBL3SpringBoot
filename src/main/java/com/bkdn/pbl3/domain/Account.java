@@ -16,7 +16,7 @@ import java.util.Set;
 public class Account implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int accountId;
+    private long accountId;
     @Column(nullable = false)
     private String userName;
     @Column(nullable = false)
@@ -26,7 +26,7 @@ public class Account implements Serializable {
     @Column(columnDefinition = "nvarchar(100) not null")
     private String fullName;
     @Column(columnDefinition = "nvarchar(100) not null")
-    private String _class;
+    private String classs;
     @Column(columnDefinition = "nvarchar(100) not null")
     private String faculty;
 
