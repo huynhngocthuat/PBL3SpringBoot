@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AccountService {
+    Account login(String username, String password);
+
     List<Account> findAll();
 
     <S extends Account> S save(S s);

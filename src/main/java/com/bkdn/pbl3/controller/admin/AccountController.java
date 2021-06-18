@@ -34,7 +34,7 @@ public class AccountController {
         AccountDto dto = new AccountDto();
         if(opt.isPresent()){
             Account entity = opt.get();
-            BeanUtils.copyProperties(entity, dto);
+            BeanUtils.copyProperties(entity, dto);  
             dto.setIsEdit(true);
             model.addAttribute("account", dto);
             return new ModelAndView("admin/account/addOrEdit", model);

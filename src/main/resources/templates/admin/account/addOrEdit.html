@@ -17,7 +17,7 @@
     </header>
     <section class="row">
         <div class="col-6 offset-3 mt-4">
-            <form th:action="@{/admin/account/saveOrUpdate}" method="post" th:object="${account}" th:field>
+            <form th:action="@{/admin/account/saveOrUpdate}" method="post" th:object="${account}">
                 <div class="card">
                     <div class="card-header">
                         <h2 th:if="${account.isEdit}">Update Account</h2>
@@ -59,7 +59,7 @@
 
                     <div class="card-footer text-muted">
                         <button type="reset" class="btn btn-secondary">Reset</button>
-                        <a th:href="@{/admin/account}" class="btn btn-success">List Zone</a>
+                        <a th:href="@{/admin/account}" class="btn btn-success">List Account</a>
                         <button class="btn btn-primary"><i class="fas fa-save"></i>
                             <span th:if="${account.isEdit}">Update</span>
                             <span th:unless="${account.isEdit}">Save</span>

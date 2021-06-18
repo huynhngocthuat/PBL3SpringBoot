@@ -6,7 +6,6 @@ import com.bkdn.pbl3.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +17,15 @@ public class AccountServiceIml implements AccountService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Override
+    public Account login(String username, String password){
+        Account optExist = findByUserName(username);
+        if(optExist != null && bCryptPasswordEncoder.matches(password, optExist.getPassWord())){
+            optExist.setPassWord("");
+            return optExist;
+        }
+        return null;
+    }
     @Override
     public List<Account> findAll() {
         return accountRepository.findAll();
