@@ -18,8 +18,10 @@ public class ReportDto {
     private String note;
     private int reportStatus;
     private Date reportedDate;
-    private Boolean isEdit;
+    private Boolean isEdit = true;
     private long accountId;
     private String equipmentId;
     private String statusId;
+
+    private Boolean editing = false;
 }

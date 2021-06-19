@@ -2,10 +2,12 @@ package com.bkdn.pbl3.controller.admin;
 
 import com.bkdn.pbl3.domain.Equipment;
 import com.bkdn.pbl3.domain.Room;
+import com.bkdn.pbl3.domain.Status;
 import com.bkdn.pbl3.model.EquipmentDto;
 import com.bkdn.pbl3.model.RoomDto;
 import com.bkdn.pbl3.service.EquipmentService;
 import com.bkdn.pbl3.service.RoomService;
+import com.bkdn.pbl3.service.StatusService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -33,6 +35,8 @@ public class EquipmenController {
     RoomService roomService;
     @Autowired
     EquipmentService equipmentService;
+    @Autowired
+    StatusService statusService;
 
     @ModelAttribute("rooms")
     public List<RoomDto> getZones(){
@@ -66,6 +70,11 @@ public class EquipmenController {
 
     @GetMapping("delete/{equipmentId}")
     public ModelAndView delete(ModelMap model, @PathVariable("equipmentId") String equipmentId){
+        Equipment equipment = equipmentService.getById(equipmentId);
+        List<Status> list = statusService.findStatusByEquipment(equipment);
+        for(Status status : list){
+            statusService.deleteById(status.getStatusId());
+        }
         equipmentService.deleteById(equipmentId);
         model.addAttribute("message", "Equipment is deleted!");
         return new ModelAndView("forward:/admin/equipment", model);

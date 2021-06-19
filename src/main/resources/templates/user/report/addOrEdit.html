@@ -9,6 +9,8 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+    <link rel="shortcut icon" type="image/jpg" href="/images/itf.jpg"/>
+    <script src="/js/report.js"></script>
 </head>
 <body>
 <main class="container">
@@ -16,7 +18,7 @@
     </header>
     <section class="row">
         <div class="col mt-4">
-            <form th:action="/admin/report/saveOrUpdate" method="post" enctype="multipart/form-data" th:object="${report}">
+            <form th:action="@{/user/report/saveOrUpdate}" method="post" enctype="multipart/form-data" th:object="${report}">
                 <div class="card">
                     <div class="card-header">
                         <h2>Add New Report</h2>
@@ -25,37 +27,32 @@
                         <div class="row">
                             <div class="col-7">
                                 <div class="form-group">
-                                    <label for="zoneName">Zone :</label>
-                                    <select class="form-control" name="zoneName" id="zoneName" th:field="*{zoneName}">
-                                        <option>Khu A</option>
-                                        <option>Khu B</option>
-                                        <option>Khu C</option>
+                                    <label for="zoneId">Zone :</label>
+                                    <select class="form-control" name="zoneId" id="zoneId">
+                                        <option th:each="item : ${zones}" th:value="${item.zoneId}" th:text="${item.zoneName}"></option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="roomId">Room :</label>
-                                    <select class="form-control" name="roomId" id="roomId" th:field="*{roomId}">
-                                        <option>A112</option>
-                                        <option>A113</option>
-                                        <option>A114</option>
+                                    <select class="form-control" name="roomId" id="roomId">
+                                        <option th:each="item : ${rooms}" th:value="${item.roomId}" th:text="${item.roomId}" ></option>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="equipmentName">Equiment :</label>
-                                    <select class="form-control" name="equipmentName" id="equipmentName" th:field="*{equipmentName}">
-                                        <option>Table 1</option>
-                                        <option>Table 2</option>
-                                        <option>Table 3</option>
+                                    <label for="equipmentId">Equipment :</label>
+                                    <select class="form-control" name="equipmentId" id="equipmentId" th:field="*{equipmentId}">
+                                        <option th:each="item : ${equipments}" th:value="${item.equipmentId}"
+                                                th:text="${item.equipmentName}" th:select="${item.equipmentId == report.equipmentId}"></option>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="statusName">Status :</label>
-                                    <select class="form-control" name="statusName" id="statusName" th:field="*{statusName}">
-                                        <option>Break</option>
-                                        <option>Wanting</option>
-                                        <option>Other</option>
+                                    <label for="statusId">Status :</label>
+                                    <select class="form-control" name="statusId" id="statusId" th:field="*{statusId}">
+                                        <option th:each="item : ${statuses}" th:value="${item.statusId}"
+                                                th:text="${item.equipmentStatus}" th:select="${item.statusId == report.statusId}"></option>
                                     </select>
                                 </div>
+                                
 
                             </div>
                             <div class="col-3">
@@ -63,7 +60,7 @@
                                      class="img-fluid" alt="">
                                 <div class="form-group">
                                     <label for="reportImage">Image File</label>
-                                    <input type="file" class="form-control-file" name="imageFile" id="reportImage"
+                                    <input type="file" onchange="chooseFile(this)" class="form-control-file" name="imageFile" id="reportImage"
                                            placeholder="Report Image" aria-describedby="reportImageHid" th:field="*{image}">
                                     <small id="reportImageHid" class="form-text text-muted">Report Image is required</small>
                                 </div>
