@@ -51,8 +51,12 @@ public class AccountController {
     }
 
     @PostMapping("saveOrUpdate")
-    public ModelAndView saveOrUpdate(ModelMap model, @Valid @ModelAttribute("account") AccountDto dto, BindingResult result)
+    public ModelAndView saveOrUpdate(ModelMap model, @RequestParam(name = "rePassWord", required = false) String rePassWord, @Valid @ModelAttribute("account") AccountDto dto, BindingResult result)
     {
+        String password = dto.getPassWord();
+        if(!rePassWord.equals(password)){
+            return new ModelAndView("admin/account/addOrEdit");
+        }
         if(result.hasErrors()){
             return new ModelAndView("admin/account/addOrEdit");
         }

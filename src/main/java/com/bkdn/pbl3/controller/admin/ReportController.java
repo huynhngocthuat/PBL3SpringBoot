@@ -16,6 +16,7 @@ import javax.validation.Valid;
 import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Controller
@@ -33,6 +34,8 @@ public class ReportController {
     EquipmentService equipmentService;
     @Autowired
     StatusService statusService;
+    @Autowired
+    StorageService storageService;
 
     @ModelAttribute("zones")
     public List<ZoneDto> getZones(){
@@ -121,6 +124,13 @@ public class ReportController {
         Status status = new Status();
         status.setStatusId(dto.getStatusId());
         entity.setStatus(status);
+
+        if(!dto.getImageFile().isEmpty()){
+            UUID uuid = UUID.randomUUID();
+            String uuString = uuid.toString();
+            entity.setImage(storageService.getStoredFilename(dto.getImageFile(), uuString));
+            storageService.store(dto.getImageFile(), entity.getImage());
+        }
 
         reportService.save(entity);
         model.addAttribute("message", "Report is saved!");

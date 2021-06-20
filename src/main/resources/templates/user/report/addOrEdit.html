@@ -1,90 +1,90 @@
 <!doctype html>
 <html xmlns:th="http://thymeleaf.org">
 <head>
-    <title>Title</title>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Title</title>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
-    <link rel="shortcut icon" type="image/jpg" href="/images/itf.jpg"/>
-    <script src="/js/report.js"></script>
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+<link rel="shortcut icon" type="image/jpg" href="/images/itf.jpg"/>
+<script src="/js/user.js"></script>
 </head>
 <body>
 <main class="container">
-    <header class="row text-center">
-    </header>
-    <section class="row">
-        <div class="col mt-4">
-            <form th:action="@{/user/report/saveOrUpdate}" method="post" enctype="multipart/form-data" th:object="${report}">
-                <div class="card">
-                    <div class="card-header">
-                        <h2>Add New Report</h2>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-7">
-                                <div class="form-group">
-                                    <label for="zoneId">Zone :</label>
-                                    <select class="form-control" name="zoneId" id="zoneId">
-                                        <option th:each="item : ${zones}" th:value="${item.zoneId}" th:text="${item.zoneName}"></option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="roomId">Room :</label>
-                                    <select class="form-control" name="roomId" id="roomId">
-                                        <option th:each="item : ${rooms}" th:value="${item.roomId}" th:text="${item.roomId}" ></option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="equipmentId">Equipment :</label>
-                                    <select class="form-control" name="equipmentId" id="equipmentId" th:field="*{equipmentId}">
-                                        <option th:each="item : ${equipments}" th:value="${item.equipmentId}"
-                                                th:text="${item.equipmentName}" th:select="${item.equipmentId == report.equipmentId}"></option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="statusId">Status :</label>
-                                    <select class="form-control" name="statusId" id="statusId" th:field="*{statusId}">
-                                        <option th:each="item : ${statuses}" th:value="${item.statusId}"
-                                                th:text="${item.equipmentStatus}" th:select="${item.statusId == report.statusId}"></option>
-                                    </select>
-                                </div>
-                                
+<header class="row text-center">
+</header>
+<section class="row">
+    <div class="col mt-4">
+        <form th:action="@{/user/report/saveOrUpdate}" method="post" enctype="multipart/form-data" th:object="${report}">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Add New Report</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-7">
+                            <div class="form-group">
+                                <label for="zoneId">Zone :</label>
+                                <select class="form-control" name="zoneId" id="zoneId">
+                                    <option th:each="item : ${zones}" th:value="${item.zoneId}" th:text="${item.zoneName}"></option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="roomId">Room :</label>
+                                <select class="form-control" name="roomId" id="roomId">
+                                    <option th:each="item : ${rooms}" th:value="${item.roomId}" th:text="${item.roomId}" ></option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="equipmentId">Equipment :</label>
+                                <select class="form-control" name="equipmentId" id="equipmentId" th:field="*{equipmentId}">
+                                    <option th:each="item : ${equipments}" th:value="${item.equipmentId}"
+                                            th:text="${item.equipmentName}" th:select="${item.equipmentId == report.equipmentId}"></option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="statusId">Status :</label>
+                                <select class="form-control" name="statusId" id="statusId" th:field="*{statusId}">
+                                    <option th:each="item : ${statuses}" th:value="${item.statusId}"
+                                            th:text="${item.equipmentStatus}" th:select="${item.statusId == report.statusId}"></option>
+                                </select>
+                            </div>
 
-                            </div>
-                            <div class="col-3">
-                                <img id="image" src="/Saved Pictures/19T2.jpg" width="90%"
-                                     class="img-fluid" alt="">
-                                <div class="form-group">
-                                    <label for="reportImage">Image File</label>
-                                    <input type="file" onchange="chooseFile(this)" class="form-control-file" name="imageFile" id="reportImage"
-                                           placeholder="Report Image" aria-describedby="reportImageHid" th:field="*{image}">
-                                    <small id="reportImageHid" class="form-text text-muted">Report Image is required</small>
-                                </div>
-                            </div>
+
                         </div>
-                        <div class="row">
-                            <div class="col">
-                                <div class="form-group">
-                                    <label for="note">Description</label>
-                                    <textarea class="form-control" name="note" id="note" rows="3" th:field="*{note}"></textarea>
-                                </div>
+                        <div class="col-3">
+                            <img id="image" src="/Saved Pictures/19T2.jpg" width="90%"
+                                 class="img-fluid" alt="">
+                            <div class="form-group">
+                                <label for="reportImage">Image File</label>
+                                <input type="file" onchange="chooseFile(this)" class="form-control-file" name="imageFile" id="reportImage"
+                                       placeholder="Report Image" aria-describedby="reportImageHid">
+                                <small id="reportImageHid" class="form-text text-muted">Report Image is required</small>
                             </div>
                         </div>
                     </div>
-                    <div class="card-footer text-muted">
-                        <a class="btn btn-success">New</a>
-                        <button class="btn btn-primary">Save</button>
-                        <a class="btn btn-danger float-right">Delete</a>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="note">Description</label>
+                                <textarea class="form-control" name="note" id="note" rows="3" th:field="*{note}"></textarea>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </form>
-        </div>
-    </section>
-    <footer class="row"></footer>
+                <div class="card-footer text-muted">
+                    <a class="btn btn-success">New</a>
+                    <button class="btn btn-primary">Save</button>
+                    <a class="btn btn-danger float-right">Delete</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+<footer class="row"></footer>
 </main>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
