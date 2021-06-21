@@ -19,6 +19,6 @@ public class Zone implements Serializable {
     @Column(columnDefinition = "nvarchar(100) not null")
     private String zoneName;
 
-    @OneToMany(mappedBy = "zone", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "zone", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Room> rooms;
 }

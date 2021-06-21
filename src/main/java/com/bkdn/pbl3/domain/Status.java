@@ -23,6 +23,6 @@ public class Status implements Serializable {
     @JoinColumn(name = "equipmentId")
     private Equipment equipment;
 
-    @OneToMany(mappedBy = "status", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "status", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Report> reports;
 }

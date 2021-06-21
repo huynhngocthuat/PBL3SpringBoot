@@ -5,14 +5,19 @@ import com.bkdn.pbl3.model.*;
 import com.bkdn.pbl3.service.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
@@ -83,6 +88,9 @@ public class ReportController {
         if(opt.isPresent()){
             Report entity = opt.get();
             BeanUtils.copyProperties(entity, dto);
+            dto.setAccountId(entity.getAccount().getAccountId());
+            dto.setEquipmentId(entity.getEquipment().getEquipmentId());
+            dto.setStatusId(entity.getStatus().getStatusId());
             dto.setEditing(true);
             model.addAttribute("report", dto);
             return new ModelAndView("user/report/addOrEdit", model);
@@ -91,15 +99,33 @@ public class ReportController {
         return new ModelAndView("forward:/user/report",model);
     }
 
+    @GetMapping("images/{filename:.+}")
+    @ResponseBody
+    public ResponseEntity<Resource> serveFile(@PathVariable String filename){
+        Resource file = storageService.loadAsResource(filename);
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+    }
+
     @GetMapping("delete/{reportId}")
-    public ModelAndView delete(ModelMap model, @PathVariable("reportId") Long reportId){
-        reportService.deleteById(reportId);
-        model.addAttribute("message", "Report is deleted!");
+    public ModelAndView delete(ModelMap model, @PathVariable("reportId") Long reportId) throws IOException {
+
+        Optional<Report> opt = reportService.findById(reportId);
+        if(opt.isPresent()){
+            if(!StringUtils.isEmpty(opt.get().getImage())){
+                storageService.delete(opt.get().getImage());
+            }
+            reportService.deleteById(reportId);
+            model.addAttribute("massage", "Report is deleted!");
+        }else {
+            model.addAttribute("message", "Report is not found!");
+        }
+
         return new ModelAndView("forward:/user/report", model);
     }
 
     @PostMapping("saveOrUpdate")
-    public ModelAndView saveOrUpdate(ModelMap model, @Valid @ModelAttribute("report") ReportDto dto, BindingResult result)
+    public ModelAndView saveOrUpdate(ModelMap model, @RequestParam(name = "roomId", required = false) String roomId,
+                                     @Valid @ModelAttribute("report") ReportDto dto, BindingResult result)
     {
         if(result.hasErrors()){
             return new ModelAndView("user/report/addOrEdit");
@@ -119,17 +145,29 @@ public class ReportController {
 
         Equipment equipment = new Equipment();
         equipment.setEquipmentId(dto.getEquipmentId());
+        Optional<Room> room = roomService.findById(roomId);
+        if(room.isPresent()){
+            equipment.setRoom(room.get());
+            equipment.setEquipmentName(equipmentService.getById(dto.getEquipmentId()).getEquipmentName());
+        }
         entity.setEquipment(equipment);
 
         Status status = new Status();
         status.setStatusId(dto.getStatusId());
+        status.setEquipmentStatus(statusService.findById(dto.getStatusId()).get().getEquipmentStatus());
         entity.setStatus(status);
 
+        //xu ly image
         if(!dto.getImageFile().isEmpty()){
             UUID uuid = UUID.randomUUID();
             String uuString = uuid.toString();
             entity.setImage(storageService.getStoredFilename(dto.getImageFile(), uuString));
             storageService.store(dto.getImageFile(), entity.getImage());
+        }else {
+            Optional<Report> report = reportService.findById(dto.getReportId());
+            if(report.isPresent()){
+                entity.setImage(report.get().getImage());
+            }
         }
 
         reportService.save(entity);

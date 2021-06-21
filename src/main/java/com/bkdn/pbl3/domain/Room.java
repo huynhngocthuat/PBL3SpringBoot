@@ -23,6 +23,6 @@ public class Room implements Serializable{
     @JoinColumn(name = "zoneId")
     private Zone zone;
 
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Equipment> equipments;
 }

@@ -40,6 +40,6 @@ public class Report implements Serializable {
     @JoinColumn(name = "statusId")
     private Status status;
 
-    @OneToMany(mappedBy = "report", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "report", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Response> responses;
 }

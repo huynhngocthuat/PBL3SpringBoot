@@ -30,8 +30,8 @@ public class Equipment implements Serializable {
     @JoinColumn(name = "roomId")
     private Room room;
 
-    @OneToMany(mappedBy = "equipment", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "equipment", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Status> statuses;
-    @OneToMany(mappedBy = "equipment", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "equipment", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Report> reports;
 }
