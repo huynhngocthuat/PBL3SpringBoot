@@ -48,8 +48,7 @@
                             <td th:text="${report.status.equipmentStatus}"></td>
                             <td th:text="${report.note}"></td>
                             <td>
-                                <a th:href="@{'/user/report/view/' + ${report.reportId}}" class="btn btn-outline-info"><i class="fas fa-info"></i></a>
-                                <a th:href="@{'/user/report/edit/' + ${report.reportId}}" class="btn btn-outline-warning"><i class="fas fa-edit"></i></a>
+                                <a th:href="@{'/admin/response/add/' + ${report.reportId}}" class="btn btn-outline-info"><i class="fas fa-exclamation"></i></a>
                                 <a th:href="@{'/user/report/delete/' + ${report.reportId}}" class="btn btn-outline-danger"><i class="fa fa-recycle"></i></a>
                             </td>
                         </tr>

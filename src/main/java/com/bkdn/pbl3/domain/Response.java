@@ -16,7 +16,7 @@ import java.util.Date;
 public class Response implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int responseId;
+    private long responseId;
     @Column(columnDefinition = "nvarchar(200) not null")
     private String message;
     @Column(nullable = false)

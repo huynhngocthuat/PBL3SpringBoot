@@ -1,10 +1,108 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html xmlns:th="http://thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
     <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+    <link rel="shortcut icon" type="image/jpg" href="/images/itf.jpg"/>
+    <script src="/js/user.js"></script>
 </head>
 <body>
-
+<main class="container">
+    <header class="row text-center">
+    </header>
+    <section class="row">
+        <div class="col mt-4">
+            <form th:action="@{/admin/response/saveOrUpdate}" method="post" enctype="multipart/form-data" th:object="${response}">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>---------------------------------Response---------------------------------------</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">   
+                            <div class="col-6">
+                                <div class="form-group row">
+                                    <label for="reportId" class="col-sm-4 col-form-label">Report ID</label>
+                                    <div class="col-sm-7">
+                                        <input th:value="${report.reportId}" type="text" class="form-control" name="reportId" id="reportId" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="accountId" class="col-sm-4 col-form-label">Account Report</label>
+                                    <div class="col-sm-7">
+                                        <input th:value="${report.account.accountId}" type="text" class="form-control" id="accountId" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="roomId" class="col-sm-4 col-form-label">Room</label>
+                                    <div class="col-sm-7">
+                                        <input th:value="${report.equipment.room.roomId}" type="text" class="form-control" id="roomId" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="equipmentName" class="col-sm-4 col-form-label">Equipment</label>
+                                    <div class="col-sm-7">
+                                        <input th:value="${report.equipment.equipmentName}" type="text" class="form-control" id="equipmentName" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="equipmentStatus" class="col-sm-4 col-form-label">Status</label>
+                                    <div class="col-sm-7">
+                                        <input th:value="${report.status.equipmentStatus}" type="text" class="form-control" id="equipmentStatus" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="reportedDate" class="col-sm-4 col-form-label">Day Report</label>
+                                    <div class="col-sm-7">
+                                        <input th:value="${report.reportedDate}" type="date" class="form-control" id="reportedDate" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="note" class="col-sm-4 col-form-label">Note</label>
+                                    <div class="col-sm-7">
+                                        <input th:value="${report.note}" type="text" class="form-control" id="note" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-5">
+                                <div class="form-group">
+                                  <label for="responseType">Response Type :</label>
+                                  <select th:field="*{responseType}" class="form-control" name="responseType" id="responseType">
+                                    <option th:value="1">Xác nhận thông tin</option>
+                                    <option th:value="2">Đã xử lý</option>
+                                    <option th:value="3">Báo cáo sai</option>
+                                  </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="message">Message :</label>
+                                    <textarea class="form-control" name="message" id="message" rows="3" th:field="*{message}"></textarea>
+                                    <small th:if="${#fields.hasErrors('message')}" id="messageHid"
+                                           class="form-text text-muted">Message id is required</small>
+                                </div>
+                                <img id="image" th:src="${'/user/report/images/' + report.image}"
+                                     src="/images/itf.jpg" width="70%"
+                                     class="img-fluid" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <button class="btn btn-primary float-right">Response</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+    <footer class="row"></footer>
+</main>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
 </html>
