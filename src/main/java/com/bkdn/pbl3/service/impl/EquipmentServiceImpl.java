@@ -1,8 +1,12 @@
 package com.bkdn.pbl3.service.impl;
 
 import com.bkdn.pbl3.domain.Equipment;
+import com.bkdn.pbl3.domain.Room;
+import com.bkdn.pbl3.domain.Status;
 import com.bkdn.pbl3.repository.EquipmentRepository;
 import com.bkdn.pbl3.service.EquipmentService;
+import com.bkdn.pbl3.service.ReportService;
+import com.bkdn.pbl3.service.StatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.data.domain.Example;
@@ -15,10 +19,20 @@ import java.util.Optional;
 public class EquipmentServiceImpl implements EquipmentService {
     @Autowired
     EquipmentRepository equipmentRepository;
+    @Autowired
+    StatusService statusService;
+
+    @Autowired
+    ReportService reportService;
 
     @Override
     public List<Equipment> findAll() {
         return equipmentRepository.findAll();
+    }
+
+    @Override
+    public List<Equipment> findEquipmentByRoom(Room room) {
+        return equipmentRepository.findEquipmentByRoom(room);
     }
 
     @Override
@@ -40,4 +54,15 @@ public class EquipmentServiceImpl implements EquipmentService {
     public void deleteById(String s) {
         equipmentRepository.deleteById(s);
     }
+//    @Override
+//    public  void deleteEquipmentByRoom(Room room){
+//        //FIX CHO NAY
+//        List<Equipment> list = this.findEquipmentByRoom(room);
+//        for(Equipment equipment : list){
+//            statusService.deleteStatusByEquipment(equipment);
+//            reportService.deleteReportByEquipment(equipment);
+//            this.deleteById(equipment.getEquipmentId());
+//        }
+//    }
+
 }

@@ -4,6 +4,7 @@ import com.bkdn.pbl3.domain.Room;
 import com.bkdn.pbl3.domain.Zone;
 import com.bkdn.pbl3.model.RoomDto;
 import com.bkdn.pbl3.model.ZoneDto;
+import com.bkdn.pbl3.service.EquipmentService;
 import com.bkdn.pbl3.service.RoomService;
 import com.bkdn.pbl3.service.ZoneService;
 import org.springframework.beans.BeanUtils;
@@ -28,6 +29,9 @@ public class RoomController {
 
     @Autowired
     RoomService roomService;
+
+    @Autowired
+    EquipmentService equipmentService;
 
     @ModelAttribute("zones")
     public List<ZoneDto> getZones(){

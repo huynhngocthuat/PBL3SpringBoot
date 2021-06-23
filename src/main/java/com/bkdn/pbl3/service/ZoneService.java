@@ -23,5 +23,7 @@ public interface ZoneService {
 
     Page<Zone> findByZoneNameContaining(String name, Pageable pageable);
 
+    Zone getById(String s);
+
     <S extends Zone> S save(S s);
 }

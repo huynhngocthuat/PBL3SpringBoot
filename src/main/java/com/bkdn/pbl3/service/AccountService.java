@@ -16,5 +16,7 @@ public interface AccountService {
 
     Optional<Account> findById(Long aLong);
 
+    Account getById(Long aLong);
+
     void deleteById(Long aLong);
 }

@@ -57,6 +57,11 @@ public class ZoneServiceImpl implements ZoneService {
     }
 
     @Override
+    public Zone getById(String s) {
+        return zoneRepository.getById(s);
+    }
+
+    @Override
     public <S extends Zone> S save(S s) {
         return zoneRepository.save(s);
     }

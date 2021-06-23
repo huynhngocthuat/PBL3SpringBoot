@@ -50,7 +50,6 @@
                             <td scope="row">[[${zone.zoneId}]]</td>
                             <td th:text="${zone.zoneName}"></td>
                             <td>
-                                <a th:href="@{'/admin/zone/view/' + ${zone.zoneId}}" class="btn btn-outline-info"><i class="fas fa-info"></i></a>
                                 <a th:href="@{'/admin/zone/edit/' + ${zone.zoneId}}" class="btn btn-outline-warning"><i class="fas fa-edit"></i></a>
                                 <a th:href="@{'/admin/zone/delete/' + ${zone.zoneId}}" class="btn btn-outline-danger"><i class="fa fa-recycle"></i></a>
                             </td>

@@ -1,4 +1,4 @@
-package com.bkdn.pbl3.controller.admin;
+package com.bkdn.pbl3.controller.user;
 
 import com.bkdn.pbl3.domain.*;
 import com.bkdn.pbl3.model.*;
@@ -41,6 +41,9 @@ public class ReportController {
     StatusService statusService;
     @Autowired
     StorageService storageService;
+
+    @Autowired
+    ResponseService responseService;
 
     @ModelAttribute("zones")
     public List<ZoneDto> getZones(){
@@ -108,8 +111,8 @@ public class ReportController {
 
     @GetMapping("delete/{reportId}")
     public ModelAndView delete(ModelMap model, @PathVariable("reportId") Long reportId) throws IOException {
-
         Optional<Report> opt = reportService.findById(reportId);
+        responseService.deleteResponseByReport(opt.get());
         if(opt.isPresent()){
             if(!StringUtils.isEmpty(opt.get().getImage())){
                 storageService.delete(opt.get().getImage());

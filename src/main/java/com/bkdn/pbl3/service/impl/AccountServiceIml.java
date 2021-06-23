@@ -48,6 +48,11 @@ public class AccountServiceIml implements AccountService {
     }
 
     @Override
+    public Account getById(Long aLong) {
+        return accountRepository.getById(aLong);
+    }
+
+    @Override
     public void deleteById(Long aLong) {
         accountRepository.deleteById(aLong);
     }

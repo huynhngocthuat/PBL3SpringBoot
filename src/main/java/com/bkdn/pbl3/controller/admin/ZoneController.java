@@ -2,6 +2,7 @@ package com.bkdn.pbl3.controller.admin;
 
 import com.bkdn.pbl3.domain.Zone;
 import com.bkdn.pbl3.model.ZoneDto;
+import com.bkdn.pbl3.service.RoomService;
 import com.bkdn.pbl3.service.ZoneService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,8 @@ public class ZoneController {
 
     @Autowired
     ZoneService zoneService;
+    @Autowired
+    RoomService roomService;
 
     @GetMapping("/add")
     public String add(Model model){

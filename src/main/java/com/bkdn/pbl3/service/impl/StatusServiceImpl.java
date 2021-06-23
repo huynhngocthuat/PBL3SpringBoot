@@ -33,6 +33,11 @@ public class StatusServiceImpl implements StatusService {
     }
 
     @Override
+    public Status getById(String s) {
+        return statusRepository.getById(s);
+    }
+
+    @Override
     public Optional<Status> findById(String s) {
         return statusRepository.findById(s);
     }
@@ -41,4 +46,13 @@ public class StatusServiceImpl implements StatusService {
     public void deleteById(String s) {
         statusRepository.deleteById(s);
     }
+
+    @Override
+    public  void deleteStatusByEquipment(Equipment equipment){
+        List<Status> list = this.findStatusByEquipment(equipment);
+        for(Status status : list){
+            this.deleteById(status.getStatusId());
+        }
+    }
+
 }

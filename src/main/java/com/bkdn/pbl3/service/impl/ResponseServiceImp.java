@@ -1,6 +1,6 @@
 package com.bkdn.pbl3.service.impl;
 
-import com.bkdn.pbl3.domain.Response;
+import com.bkdn.pbl3.domain.*;
 import com.bkdn.pbl3.repository.ResponseRepository;
 import com.bkdn.pbl3.service.ResponseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +25,16 @@ public class ResponseServiceImp implements ResponseService {
     }
 
     @Override
+    public List<Response> findResponsesByAccount(Account account) {
+        return responseRepository.findResponsesByAccount(account);
+    }
+
+    @Override
+    public List<Response> findResponsesByReport(Report report) {
+        return responseRepository.findResponsesByReport(report);
+    }
+
+    @Override
     public <S extends Response> S save(S s) {
         return responseRepository.save(s);
     }
@@ -38,4 +48,13 @@ public class ResponseServiceImp implements ResponseService {
     public void deleteById(Long aLong) {
         responseRepository.deleteById(aLong);
     }
+
+    @Override
+    public  void deleteResponseByReport(Report report){
+        List<Response> list = this.findResponsesByReport(report);
+        for(Response response : list){
+            this.deleteById(response.getResponseId());
+        }
+    }
+
 }

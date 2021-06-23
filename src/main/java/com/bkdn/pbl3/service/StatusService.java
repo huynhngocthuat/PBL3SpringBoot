@@ -13,7 +13,11 @@ public interface StatusService {
 
     List<Status> findStatusByEquipment(Equipment equipment);
 
+    Status getById(String s);
+
     Optional<Status> findById(String s);
 
     void deleteById(String s);
+
+    void deleteStatusByEquipment(Equipment equipment);
 }
