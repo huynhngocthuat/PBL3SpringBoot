@@ -58,6 +58,7 @@ public class ReportController {
         return roomService.findAll().stream().map(item ->{
             RoomDto dto = new RoomDto();
             BeanUtils.copyProperties(item, dto);
+            dto.setZoneId(item.getZone().getZoneId());
             return dto;
         }).collect(Collectors.toList());
     }
@@ -66,6 +67,7 @@ public class ReportController {
         return equipmentService.findAll().stream().map(item ->{
             EquipmentDto dto = new EquipmentDto();
             BeanUtils.copyProperties(item, dto);
+            dto.setRoomId(item.getRoom().getRoomId());
             return dto;
         }).collect(Collectors.toList());
     }
@@ -74,6 +76,7 @@ public class ReportController {
         return statusService.findAll().stream().map(item ->{
             StatusDto dto = new StatusDto();
             BeanUtils.copyProperties(item, dto);
+            dto.setEquipmentId(item.getEquipment().getEquipmentId());
             return dto;
         }).collect(Collectors.toList());
     }

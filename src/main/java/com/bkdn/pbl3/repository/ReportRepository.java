@@ -14,6 +14,4 @@ import java.util.List;
 public interface ReportRepository extends JpaRepository<Report, Long> {
     List<Report> findReportByEquipment(Equipment equipment);
     List<Report> findReportByAccount(Account account);
-    @Query("")
-    List<List> getReportShow();
 }
