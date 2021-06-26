@@ -3,13 +3,18 @@ package com.bkdn.pbl3.service.impl;
 import com.bkdn.pbl3.domain.Account;
 import com.bkdn.pbl3.domain.Equipment;
 import com.bkdn.pbl3.domain.Report;
-import com.bkdn.pbl3.domain.Status;
+import com.bkdn.pbl3.model.ReportShow;
 import com.bkdn.pbl3.repository.ReportRepository;
 import com.bkdn.pbl3.service.ReportService;
 import com.bkdn.pbl3.service.ResponseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.xml.crypto.Data;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -63,5 +68,30 @@ public class ReportServiceImpl implements ReportService {
             responseService.deleteResponseByReport(report);
             this.deleteById(report.getReportId());
         }
+    }
+
+    @Override
+    public List<ReportShow> getReportShow() throws ParseException {
+        List<ReportShow> listShow = new ArrayList<>();
+        for(Object obj : reportRepository.getReportShow()){
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Object[] rowArray = (Object[]) obj;
+            ReportShow rp = new ReportShow();
+            rp.setReportId(Integer.parseInt(String.valueOf(rowArray[0])));
+            rp.setAccountId(Integer.parseInt(String.valueOf(rowArray[1])));
+            rp.setRoomID(String.valueOf(rowArray[2]));
+            if(rowArray[3]!=null){
+                rp.setResponseType(Integer.parseInt(String.valueOf(rowArray[3])));
+                rp.setResponsedDate(String.valueOf(rowArray[4]));
+                rp.setResponseMessage(String.valueOf(rowArray[5]));
+            }
+            rp.setEquipmentName(String.valueOf(rowArray[6]));
+            rp.setEquipmentStatus(String.valueOf(rowArray[7]));
+            rp.setReportMessage(String.valueOf(rowArray[8]));
+            rp.setReportedDate(String.valueOf(rowArray[9]));
+            rp.setIsEdit(Boolean.parseBoolean(String.valueOf(rowArray[10])));
+            listShow.add(rp);
+        }
+        return listShow;
     }
 }

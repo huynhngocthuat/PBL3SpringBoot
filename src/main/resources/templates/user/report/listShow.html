@@ -5,7 +5,6 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
@@ -78,35 +77,15 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <th scope="row">1</th>
-                <td>A124</td>
-                <td>22/5/2021</td>
-                <td>Báo cáo sai</td>
-                <td>Quạt 1</td>
-                <td>Không hoạt động</td>
-                <td>Mong Ad xử lí nhanh</td>
-                <td>20/5/2021</td>
-            </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td>B124</td>
-                <td>22/4/2021</td>
-                <td>Cảm ơn bạn</td>
-                <td>Điều hoà</td>
-                <td>Không hoạt động</td>
-                <td>Chờ xử lí</td>
-                <td>20/4/2021</td>
-            </tr>
-            <tr>
-                <th scope="row">3</th>
-                <td>C124</td>
-                <td>22/3/2021</td>
-                <td>Đã khắc phục</td>
-                <td>Bàn ghế 1</td>
-                <td>Bị hỏng</td>
-                <td>Thiếu bàn ghế</td>
-                <td>20/3/2021</td>
+            <tr th:each="item : ${listShow}">
+                <th scope="row">[[${item.reportId}]]</th>
+                <td>[[${item.roomID}]]</td>
+                <td>[[${item.responsedDate}]]</td>
+                <td>[[${item.responseMessage}]]</td>
+                <td>[[${item.equipmentName}]]</td>
+                <td>[[${item.equipmentStatus}]]</td>
+                <td>[[${item.reportMessage}]]</td>
+                <td>[[${item.reportedDate}]]</td>
             </tr>
             </tbody>
         </table>
