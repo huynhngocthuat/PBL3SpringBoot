@@ -34,7 +34,7 @@
                 </div>
                 <div class="card-footer text-muted">
                     <button type="reset" class="btn btn-secondary">Reset</button>
-                    <a th:href="@{/admin/zone}" class="btn btn-success">List Zone</a>
+                    <a th:href="@{/admin/zone/searchpaginated}" class="btn btn-success">List Zone</a>
                     <button class="btn btn-primary"><i class="fas fa-save"></i>
                         <span th:if="${zone.isEdit}">Update</span>
                         <span th:unless="${zone.isEdit}">Save</span>

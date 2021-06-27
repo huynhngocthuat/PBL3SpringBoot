@@ -14,6 +14,7 @@
             <h2 th:unless="${room.isEdit}">Add New Room</h2>
           </div>
           <div class="card-body">
+            <input type="hidden" th:field="*{isEdit}">
             <div class="form-group">
               <label for="roomId">Room ID :</label>
               <input th:if="${room.isEdit}" type="text" class="form-control" name="roomId" id="roomIdUpdate"

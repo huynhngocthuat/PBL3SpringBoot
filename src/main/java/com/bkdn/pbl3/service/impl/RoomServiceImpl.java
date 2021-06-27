@@ -7,8 +7,13 @@ import com.bkdn.pbl3.service.EquipmentService;
 import com.bkdn.pbl3.service.RoomService;
 import com.bkdn.pbl3.service.ZoneService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +27,11 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public List<Room> findAll() {
         return roomRepository.findAll();
+    }
+
+    @Override
+    public Page<Room> findAll(Pageable pageable) {
+        return roomRepository.findAll(pageable);
     }
 
     @Override
@@ -56,4 +66,17 @@ public class RoomServiceImpl implements RoomService {
 //            this.deleteById(room.getRoomId());
 //        }
 //    }
+
+    @Override
+    @Transactional
+    @Query(value = "UPDATE room SET room_function = ?1, zone_id = ?2 WHERE room_id = ?3", nativeQuery = true)
+    @Modifying
+    public int updateRoom(String roomFunction, String zoneId, String roomId) {
+        return roomRepository.updateRoom(roomFunction, zoneId, roomId);
+    }
+
+    @Override
+    public Page<Room> findByRoomIdContaining(String roomId, Pageable pageable) {
+        return roomRepository.findByRoomIdContaining(roomId, pageable);
+    }
 }

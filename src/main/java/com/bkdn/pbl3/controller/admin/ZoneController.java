@@ -34,16 +34,16 @@ public class ZoneController {
     RoomService roomService;
 
     @GetMapping("/add")
-    public String add(Model model){
+    public String add(Model model) {
         model.addAttribute("zone", new ZoneDto());
         return "admin/zone/addOrEdit";
     }
 
     @GetMapping("edit/{zoneId}")
-    public ModelAndView edit(ModelMap model, @PathVariable("zoneId") String zoneId){
+    public ModelAndView edit(ModelMap model, @PathVariable("zoneId") String zoneId) {
         Optional<Zone> opt = zoneService.findById(zoneId);
         ZoneDto dto = new ZoneDto();
-        if(opt.isPresent()){
+        if (opt.isPresent()) {
             Zone entity = opt.get();
             BeanUtils.copyProperties(entity, dto);
             dto.setIsEdit(true);
@@ -51,44 +51,45 @@ public class ZoneController {
             return new ModelAndView("admin/zone/addOrEdit", model);
         }
         model.addAttribute("message", "Zone is not existed");
-        return new ModelAndView("forward:/admin/zone",model);
+        return new ModelAndView("forward:/admin/zone/searchpaginated", model);
     }
 
     @GetMapping("delete/{zoneId}")
-    public ModelAndView delete(ModelMap model, @PathVariable("zoneId") String zoneId){
+    public ModelAndView delete(ModelMap model, @PathVariable("zoneId") String zoneId) {
         zoneService.deleteById(zoneId);
         model.addAttribute("message", "Zone is deleted!");
-        return new ModelAndView("forward:/admin/zone", model);
+        return new ModelAndView("forward:/admin/zone/searchpaginated", model);
     }
 
     @PostMapping("saveOrUpdate")
-    public ModelAndView saveOrUpdate(ModelMap model, @Valid @ModelAttribute("zone") ZoneDto dto, BindingResult result)
-    {
-        if(result.hasErrors()){
+    public ModelAndView saveOrUpdate(ModelMap model, @Valid @ModelAttribute("zone") ZoneDto dto, BindingResult result) {
+        if (result.hasErrors()) {
             return new ModelAndView("admin/zone/addOrEdit");
         }
-
-        Zone entity = new Zone();
-        BeanUtils.copyProperties(dto,entity);
-        zoneService.save(entity);
+        if (dto.getIsEdit()) {
+            zoneService.updateZone(dto.getZoneName(), dto.getZoneId());
+        } else {
+            Zone entity = new Zone();
+            BeanUtils.copyProperties(dto, entity);
+            zoneService.save(entity);
+        }
         model.addAttribute("message", "Zone is saved!");
-        return new ModelAndView("forward:/admin/zone",model);
+        return new ModelAndView("redirect:/admin/zone/searchpaginated", model);
     }
 
     @RequestMapping("")
-    public String list(ModelMap model){
+    public String list(ModelMap model) {
         List<Zone> list = zoneService.findAll();
         model.addAttribute("zones", list);
         return "admin/zone/list";
     }
 
     @GetMapping("search")
-    public String search(ModelMap model, @RequestParam(name = "zoneName", required = false) String zoneName){
+    public String search(ModelMap model, @RequestParam(name = "zoneName", required = false) String zoneName) {
         List<Zone> list;
-        if(StringUtils.hasText(zoneName)){
+        if (StringUtils.hasText(zoneName)) {
             list = zoneService.findByZoneNameContaining(zoneName);
-        }
-        else {
+        } else {
             list = zoneService.findAll();
         }
         model.addAttribute("zones", list);
@@ -97,27 +98,26 @@ public class ZoneController {
 
     @GetMapping("searchpaginated")
     public String searchpaginated(ModelMap model,
-                         @RequestParam(name = "zoneName", required = false) String zoneName,
-                         @RequestParam("page") Optional<Integer> page,
-                         @RequestParam("size") Optional<Integer> size){
+                                  @RequestParam(name = "zoneName", required = false) String zoneName,
+                                  @RequestParam("page") Optional<Integer> page,
+                                  @RequestParam("size") Optional<Integer> size) {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(5);
-        Pageable pageable = PageRequest.of(currentPage-1, pageSize, Sort.by("zoneName"));
+        Pageable pageable = PageRequest.of(currentPage - 1, pageSize, Sort.by("zoneName"));
         Page<Zone> resultPage;
-        if(StringUtils.hasText(zoneName)){
+        if (StringUtils.hasText(zoneName)) {
             resultPage = zoneService.findByZoneNameContaining(zoneName, pageable);
             model.addAttribute("zoneName", zoneName);
-        }
-        else {
+        } else {
             resultPage = zoneService.findAll(pageable);
         }
         int totalPages = resultPage.getTotalPages();
-        if(totalPages > 0){
-            int start = Math.max(1, currentPage-2);
-            int end = Math.min(currentPage+2, totalPages);
-            if(totalPages > 5){
-                if(end == totalPages) start = end - 5;
-                else if(start==1) end = start + 5;
+        if (totalPages > 0) {
+            int start = Math.max(1, currentPage - 2);
+            int end = Math.min(currentPage + 2, totalPages);
+            if (totalPages > 5) {
+                if (end == totalPages) start = end - 5;
+                else if (start == 1) end = start + 5;
             }
             List<Integer> pageNumbers = IntStream.rangeClosed(start, end)
                     .boxed()
