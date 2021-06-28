@@ -4,6 +4,8 @@ import com.bkdn.pbl3.domain.Account;
 import com.bkdn.pbl3.domain.Equipment;
 import com.bkdn.pbl3.domain.Report;
 import com.bkdn.pbl3.model.ReportShow;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.text.ParseException;
 import java.util.List;
@@ -11,6 +13,8 @@ import java.util.Optional;
 
 public interface ReportService {
     List<Report> findAll();
+
+    Page<Report> findAll(Pageable pageable);
 
     <S extends Report> S save(S s);
 

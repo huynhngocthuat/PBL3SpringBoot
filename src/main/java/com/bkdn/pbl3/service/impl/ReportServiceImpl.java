@@ -8,6 +8,8 @@ import com.bkdn.pbl3.repository.ReportRepository;
 import com.bkdn.pbl3.service.ReportService;
 import com.bkdn.pbl3.service.ResponseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.xml.crypto.Data;
@@ -29,6 +31,11 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public List<Report> findAll() {
         return reportRepository.findAll();
+    }
+
+    @Override
+    public Page<Report> findAll(Pageable pageable) {
+        return reportRepository.findAll(pageable);
     }
 
     @Override

@@ -4,6 +4,8 @@ import com.bkdn.pbl3.domain.Account;
 import com.bkdn.pbl3.repository.AccountRepository;
 import com.bkdn.pbl3.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +34,11 @@ public class AccountServiceIml implements AccountService {
     }
 
     @Override
+    public Page<Account> findAll(Pageable pageable) {
+        return accountRepository.findAll(pageable);
+    }
+
+    @Override
     public <S extends Account> S save(S s) {
         s.setPassWord(bCryptPasswordEncoder.encode(s.getPassWord()));
         return accountRepository.save(s);
@@ -55,5 +62,10 @@ public class AccountServiceIml implements AccountService {
     @Override
     public void deleteById(Long aLong) {
         accountRepository.deleteById(aLong);
+    }
+
+    @Override
+    public Page<Account> findByFullNameContaining(String fullName, Pageable pageable) {
+        return accountRepository.findByFullNameContaining(fullName, pageable);
     }
 }
