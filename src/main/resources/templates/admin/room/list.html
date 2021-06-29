@@ -20,7 +20,7 @@
               <form th:action="@{/admin/room}">
                 <div class="form-inline float-left">
                   <label for="roomId">Room ID : </label>
-                  <input type="text" class="form-control ml-2" name="roomId"
+                  <input type="text" class="form-control ml-2" name="roomId" th:value="${roomId}"
                          id="roomId" aria-describedby="helpId" placeholder="Enter name">
                   <button class="btn btn-outline-primary ml-2">Search</button>
                 </div>
@@ -87,7 +87,7 @@
               </li>
 
               <li th:class="${roomPage.totalPages == roomPage.number + 1} ? 'page-item active' : 'page-item'">
-                <a th:href="@{/admin/zone(roomId=${roomId}, size=${roomPage.size}, page=${roomPage.totalPages})}"
+                <a th:href="@{/admin/room(roomId=${roomId}, size=${roomPage.size}, page=${roomPage.totalPages})}"
                    class="page-link">Last</a>
               </li>
             </ul>

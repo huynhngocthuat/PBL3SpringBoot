@@ -217,7 +217,7 @@ public class ReportController {
                                   @RequestParam("size") Optional<Integer> size) {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(5);
-        Pageable pageable = PageRequest.of(currentPage - 1, pageSize, Sort.by("reportStatus"));
+        Pageable pageable = PageRequest.of(currentPage - 1, pageSize, Sort.by(Sort.Direction.DESC ,"reportedDate"));
         Page<Report> resultPage;
             resultPage = reportService.findAll(pageable);
         int totalPages = resultPage.getTotalPages();

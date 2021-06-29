@@ -20,7 +20,7 @@
               <form th:action="@{/admin/account}">
                 <div class="form-inline float-left">
                   <label for="fullName">Full Name : </label>
-                  <input type="text" class="form-control ml-2" name="fullName"
+                  <input type="text" class="form-control ml-2" name="fullName" th:value="${fullName}"
                          id="fullName" aria-describedby="helpId" placeholder="Enter name">
                   <button class="btn btn-outline-primary ml-2">Search</button>
                 </div>

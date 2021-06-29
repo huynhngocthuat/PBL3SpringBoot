@@ -20,7 +20,7 @@
                             <form th:action="@{/admin/zone/searchpaginated}">
                                 <div class="form-inline float-left">
                                   <label for="zoneName">ZoneName : </label>
-                                  <input type="text" class="form-control ml-2" name="zoneName"
+                                  <input type="text" class="form-control ml-2" name="zoneName" th:value="${zoneName}"
                                   id="zoneName" aria-describedby="helpId" placeholder="Enter name">
                                   <button class="btn btn-outline-primary ml-2">Search</button>
                                 </div>

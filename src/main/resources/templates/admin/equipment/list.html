@@ -21,7 +21,7 @@
               <form th:action="@{/admin/equipment}">
                 <div class="form-inline float-left">
                   <label for="equipmentId">Equipment ID : </label>
-                  <input type="text" class="form-control ml-2" name="equipmentId"
+                  <input type="text" class="form-control ml-2" name="equipmentId" th:value="${equipmentId}"
                          id="equipmentId" aria-describedby="helpId" placeholder="Enter name">
                   <button class="btn btn-outline-primary ml-2">Search</button>
                 </div>

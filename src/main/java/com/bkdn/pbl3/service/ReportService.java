@@ -34,8 +34,13 @@ public interface ReportService {
 
     void deleteReportByEquipment(Equipment equipment);
 
-
-    List<ReportShow> getReportShow() throws ParseException;
+    @Query(nativeQuery = true, value = " SELECT REPORT.report_id, report.account_id, room_id, MAX(RESPONSE.response_type) as 'response_type', responsed_date, MIN(CAST(message AS NVARCHAR(100))) as message, equipment_name, equipment_status, CAST(note AS NVARCHAR(100))[note], reported_date, is_edit " +
+            "FROM REPORT " +
+            "LEFT JOIN RESPONSE ON RESPONSE.report_id = REPORT.report_id " +
+            "INNER JOIN EQUIPMENT ON EQUIPMENT.equipment_id = REPORT.equipment_id " +
+            "INNER JOIN STATUS ON STATUS.status_id = REPORT.status_id " +
+            "GROUP BY REPORT.report_id, report.account_id, room_id, responsed_date, equipment_name, equipment_status, CAST(note AS NVARCHAR(100)) , reported_date, is_edit")
+    List<ReportShow> getReportShow();
 
     @Modifying
     @Query(value = "UPDATE report SET image = ?1, note = ?2, reported_date = ?3, " +

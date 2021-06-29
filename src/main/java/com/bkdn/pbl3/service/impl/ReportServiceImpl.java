@@ -81,27 +81,33 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public List<ReportShow> getReportShow() throws ParseException {
-        List<ReportShow> listShow = new ArrayList<>();
+    @Query(nativeQuery = true, value = " SELECT REPORT.report_id, report.account_id, room_id, MAX(RESPONSE.response_type) as 'response_type', responsed_date, MIN(CAST(message AS NVARCHAR(100))) as message, equipment_name, equipment_status, CAST(note AS NVARCHAR(100))[note], reported_date, is_edit " +
+            "FROM REPORT " +
+            "LEFT JOIN RESPONSE ON RESPONSE.report_id = REPORT.report_id " +
+            "INNER JOIN EQUIPMENT ON EQUIPMENT.equipment_id = REPORT.equipment_id " +
+            "INNER JOIN STATUS ON STATUS.status_id = REPORT.status_id " +
+            "GROUP BY REPORT.report_id, report.account_id, room_id, responsed_date, equipment_name, equipment_status, CAST(note AS NVARCHAR(100)) , reported_date, is_edit")
+    public List<ReportShow> getReportShow() {
+            List<ReportShow> listShow = new ArrayList<>();
         for(Object obj : reportRepository.getReportShow()){
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Object[] rowArray = (Object[]) obj;
-            ReportShow rp = new ReportShow();
-            rp.setReportId(Integer.parseInt(String.valueOf(rowArray[0])));
-            rp.setAccountId(Integer.parseInt(String.valueOf(rowArray[1])));
-            rp.setRoomID(String.valueOf(rowArray[2]));
-            if(rowArray[3]!=null){
-                rp.setResponseType(Integer.parseInt(String.valueOf(rowArray[3])));
-                rp.setResponsedDate(String.valueOf(rowArray[4]));
-                rp.setResponseMessage(String.valueOf(rowArray[5]));
-            }
-            rp.setEquipmentName(String.valueOf(rowArray[6]));
-            rp.setEquipmentStatus(String.valueOf(rowArray[7]));
-            rp.setReportMessage(String.valueOf(rowArray[8]));
-            rp.setReportedDate(String.valueOf(rowArray[9]));
-            rp.setIsEdit(Boolean.parseBoolean(String.valueOf(rowArray[10])));
-            listShow.add(rp);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Object[] rowArray = (Object[]) obj;
+        ReportShow rp = new ReportShow();
+        rp.setReportId(Integer.parseInt(String.valueOf(rowArray[0])));
+        rp.setAccountId(Integer.parseInt(String.valueOf(rowArray[1])));
+        rp.setRoomID(String.valueOf(rowArray[2]));
+        if(rowArray[3]!=null){
+            rp.setResponseType(Integer.parseInt(String.valueOf(rowArray[3])));
+            rp.setResponsedDate(String.valueOf(rowArray[4]));
+            rp.setResponseMessage(String.valueOf(rowArray[5]));
         }
+        rp.setEquipmentName(String.valueOf(rowArray[6]));
+        rp.setEquipmentStatus(String.valueOf(rowArray[7]));
+        rp.setReportMessage(String.valueOf(rowArray[8]));
+        rp.setReportedDate(String.valueOf(rowArray[9]));
+        rp.setIsEdit(Boolean.parseBoolean(String.valueOf(rowArray[10])));
+        listShow.add(rp);
+    }
         return listShow;
     }
 

@@ -33,31 +33,4 @@ public class ReportShowController {
         modelMap.addAttribute("listShow", listShow);
         return "/user/report/listShow";
     }
-
-//    @GetMapping("")
-//    public String searchpaginated(ModelMap model,
-//
-//                                  @RequestParam("page") Optional<Integer> page,
-//                                  @RequestParam("size") Optional<Integer> size) {
-//        int currentPage = page.orElse(1);
-//        int pageSize = size.orElse(5);
-//        Pageable pageable = PageRequest.of(currentPage - 1, pageSize, Sort.by("fullName"));
-//        Page<Account> resultPage;
-//            resultPage = reportService.getReportShow(pageable);
-//        int totalPages = resultPage.getTotalPages();
-//        if (totalPages > 0) {
-//            int start = Math.max(1, currentPage - 2);
-//            int end = Math.min(currentPage + 2, totalPages);
-//            if (totalPages > 5) {
-//                if (end == totalPages) start = end - 5;
-//                else if (start == 1) end = start + 5;
-//            }
-//            List<Integer> pageNumbers = IntStream.rangeClosed(start, end)
-//                    .boxed()
-//                    .collect(Collectors.toList());
-//            model.addAttribute("pageNumbers", pageNumbers);
-//        }
-//        model.addAttribute("accountPage", resultPage);
-//        return "admin/account/list";
-//    }
 }
