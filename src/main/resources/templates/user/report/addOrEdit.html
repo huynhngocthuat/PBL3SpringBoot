@@ -27,6 +27,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-7">
+                                <input type="hidden" th:field="*{editing}">
                                 <div th:if="${report.editing}" class="form-group">
                                     <label for="note">Report ID :</label>
                                     <input class="form-control" name="reportId" id="reportId" rows="3" th:field="*{reportId}" readonly></input>

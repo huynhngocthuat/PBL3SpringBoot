@@ -10,13 +10,16 @@ import com.bkdn.pbl3.service.ResponseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import javax.xml.crypto.Data;
-import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -100,5 +103,14 @@ public class ReportServiceImpl implements ReportService {
             listShow.add(rp);
         }
         return listShow;
+    }
+
+    @Override
+    @Modifying
+    @Query(value = "UPDATE report SET image = ?1, note = ?2, reported_date = ?3, " +
+            "equipment_id = ?4, status_id = ?5 WHERE report_id = ?6", nativeQuery = true)
+    @Transactional
+    public int updateReport(String image, String note, Date reportedDate, String equipmentId, String statusId, long reportId) {
+        return reportRepository.updateReport(image, note, reportedDate, equipmentId, statusId, reportId);
     }
 }

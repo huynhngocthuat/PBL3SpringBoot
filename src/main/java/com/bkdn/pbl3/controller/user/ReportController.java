@@ -136,8 +136,7 @@ public class ReportController {
 
     @PostMapping("saveOrUpdate")
     public ModelAndView saveOrUpdate(ModelMap model, @RequestParam(name = "roomId", required = false) String roomId,
-                                     @Valid @ModelAttribute("report") ReportDto dto, BindingResult result)
-    {
+                                     @Valid @ModelAttribute("report") ReportDto dto, BindingResult result) throws IOException {
         if(result.hasErrors()){
             return new ModelAndView("user/report/addOrEdit");
         }
@@ -147,43 +146,62 @@ public class ReportController {
         dto.setReportStatus(0);
         dto.setAccountId(2);
 
-        Report entity = new Report();
-        BeanUtils.copyProperties(dto,entity);
-
-        Account account = new Account();
-        account.setAccountId(dto.getAccountId());
-        entity.setAccount(account);
-
-        Equipment equipment = new Equipment();
-        equipment.setEquipmentId(dto.getEquipmentId());
-        Optional<Room> room = roomService.findById(roomId);
-        if(room.isPresent()){
-            equipment.setRoom(room.get());
-            equipment.setEquipmentName(equipmentService.getById(dto.getEquipmentId()).getEquipmentName());
-        }
-        entity.setEquipment(equipment);
-
-        Status status = new Status();
-        status.setStatusId(dto.getStatusId());
-        status.setEquipmentStatus(statusService.findById(dto.getStatusId()).get().getEquipmentStatus());
-        entity.setStatus(status);
-
-        //xu ly image
-        if(!dto.getImageFile().isEmpty()){
-            UUID uuid = UUID.randomUUID();
-            String uuString = uuid.toString();
-            entity.setImage(storageService.getStoredFilename(dto.getImageFile(), uuString));
-            storageService.store(dto.getImageFile(), entity.getImage());
-        }else {
-            Optional<Report> report = reportService.findById(dto.getReportId());
-            if(report.isPresent()){
-                entity.setImage(report.get().getImage());
+        if(dto.getEditing()){
+            String imageUpdate = null;
+            if(!dto.getImageFile().isEmpty()){
+                UUID uuid = UUID.randomUUID();
+                String uuString = uuid.toString();
+                imageUpdate = storageService.getStoredFilename(dto.getImageFile(), uuString);
+                storageService.store(dto.getImageFile(), imageUpdate);
+                Optional<Report> report = reportService.findById(dto.getReportId());
+                if(!StringUtils.isEmpty(report.get().getImage())){
+                    storageService.delete(report.get().getImage());
+                }
+            }else {
+                Optional<Report> report = reportService.findById(dto.getReportId());
+                if (report.isPresent()) {
+                    imageUpdate = report.get().getImage();
+                }
             }
+            reportService.updateReport(imageUpdate, dto.getNote(), dto.getReportedDate(), dto.getEquipmentId(), dto.getStatusId(), dto.getReportId());
+        }
+        else {
+            Report entity = new Report();
+            BeanUtils.copyProperties(dto,entity);
+
+            Account account = new Account();
+            account.setAccountId(dto.getAccountId());
+            entity.setAccount(account);
+
+            Equipment equipment = new Equipment();
+            equipment.setEquipmentId(dto.getEquipmentId());
+            Optional<Room> room = roomService.findById(roomId);
+            if(room.isPresent()){
+                equipment.setRoom(room.get());
+                equipment.setEquipmentName(equipmentService.getById(dto.getEquipmentId()).getEquipmentName());
+            }
+            entity.setEquipment(equipment);
+
+            Status status = new Status();
+            status.setStatusId(dto.getStatusId());
+            status.setEquipmentStatus(statusService.findById(dto.getStatusId()).get().getEquipmentStatus());
+            entity.setStatus(status);
+
+            //xu ly image
+            if(!dto.getImageFile().isEmpty()){
+                UUID uuid = UUID.randomUUID();
+                String uuString = uuid.toString();
+                entity.setImage(storageService.getStoredFilename(dto.getImageFile(), uuString));
+                storageService.store(dto.getImageFile(), entity.getImage());
+            }else {
+                System.out.println("No image");
+            }
+
+            reportService.save(entity);
         }
 
-        reportService.save(entity);
         model.addAttribute("message", "Report is saved!");
-        return new ModelAndView("forward:/user/report",model);
+        return new ModelAndView("redirect:/user/report",model);
     }
 
 //    @RequestMapping("")

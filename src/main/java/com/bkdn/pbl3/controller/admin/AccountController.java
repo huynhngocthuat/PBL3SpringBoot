@@ -31,49 +31,52 @@ public class AccountController {
     AccountService accountService;
 
     @GetMapping("/add")
-    public String add(Model model){
+    public String add(Model model) {
         model.addAttribute("account", new AccountDto());
         return "admin/account/addOrEdit";
     }
 
     @GetMapping("edit/{accountId}")
-    public ModelAndView edit(ModelMap model, @PathVariable("accountId") Long accountId){
+    public ModelAndView edit(ModelMap model, @PathVariable("accountId") Long accountId) {
         Optional<Account> opt = accountService.findById(accountId);
         AccountDto dto = new AccountDto();
-        if(opt.isPresent()){
+        if (opt.isPresent()) {
             Account entity = opt.get();
-            BeanUtils.copyProperties(entity, dto);  
+            BeanUtils.copyProperties(entity, dto);
             dto.setIsEdit(true);
             model.addAttribute("account", dto);
             return new ModelAndView("admin/account/addOrEdit", model);
         }
         model.addAttribute("message", "Account is not existed");
-        return new ModelAndView("forward:/admin/account",model);
+        return new ModelAndView("forward:/admin/account", model);
     }
 
     @GetMapping("delete/{accountId}")
-    public ModelAndView delete(ModelMap model, @PathVariable("accountId") Long accountId){
+    public ModelAndView delete(ModelMap model, @PathVariable("accountId") Long accountId) {
         accountService.deleteById(accountId);
         model.addAttribute("message", "Account is deleted!");
         return new ModelAndView("forward:/admin/account", model);
     }
 
     @PostMapping("saveOrUpdate")
-    public ModelAndView saveOrUpdate(ModelMap model, @RequestParam(name = "rePassWord", required = false) String rePassWord, @Valid @ModelAttribute("account") AccountDto dto, BindingResult result)
-    {
-        String password = dto.getPassWord();
-        if(!rePassWord.equals(password)){
+    public ModelAndView saveOrUpdate(ModelMap model, @RequestParam(name = "rePassWord", required = false) String rePassWord, @Valid @ModelAttribute("account") AccountDto dto, BindingResult result) {
+        if (result.hasErrors()) {
             return new ModelAndView("admin/account/addOrEdit");
         }
-        if(result.hasErrors()){
-            return new ModelAndView("admin/account/addOrEdit");
+        if (dto.getIsEdit()) {
+            accountService.updateAccount(dto.getClasss(), dto.getFaculty(), dto.getFullName(), dto.getAccountId());
+        } else {
+            String password = dto.getPassWord();
+            if (!rePassWord.equals(password)) {
+                return new ModelAndView("admin/account/addOrEdit");
+            }
+            dto.setRole(0);
+            Account entity = new Account();
+            BeanUtils.copyProperties(dto, entity);
+            accountService.save(entity);
         }
-        dto.setRole(0);
-        Account entity = new Account();
-        BeanUtils.copyProperties(dto,entity);
-        accountService.save(entity);
         model.addAttribute("message", "Account is saved!");
-        return new ModelAndView("redirect:/admin/account",model);
+        return new ModelAndView("redirect:/admin/account", model);
     }
 
 //    @RequestMapping("")

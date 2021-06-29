@@ -6,9 +6,12 @@ import com.bkdn.pbl3.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,6 +45,15 @@ public class AccountServiceIml implements AccountService {
     public <S extends Account> S save(S s) {
         s.setPassWord(bCryptPasswordEncoder.encode(s.getPassWord()));
         return accountRepository.save(s);
+    }
+
+    @Override
+    @Transactional
+    @Query(value = "UPDATE account SET classs= ?1, faculty = ?2, " +
+            " full_name = ?3 WHERE account_id = ?4", nativeQuery = true)
+    @Modifying
+    public int updateAccount(String classs, String faculty, String fullName, long accountId) {
+        return accountRepository.updateAccount(classs, faculty, fullName, accountId);
     }
 
     @Override
