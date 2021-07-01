@@ -18,7 +18,7 @@
                     <div class="row" th:if="${!reportPage.hasContent()}">
                         <div class="col">
                             <div class="alert alert-danger" role="alert">
-                                <strong>No Account Found</strong>
+                                <strong>No Report Found</strong>
                             </div>
                         </div>
                     </div>
@@ -57,7 +57,7 @@
                 <div class="card-footer text-muted">
                     <form action="">
                         <div class="form-inline float-left">
-                            <label for="size">Account size: </label>
+                            <label for="size">Page size: </label>
                             <select name="size" id="size" class="form-control ml-2" onchange="this.form.submit()">
                                 <option th:selected="${reportPage.size == 5}" value="5">5</option>
                                 <option th:selected="${reportPage.size == 10}" value="10">10</option>
