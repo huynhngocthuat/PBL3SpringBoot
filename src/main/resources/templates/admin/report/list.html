@@ -70,19 +70,19 @@
                     <nav aria-label="Page navigation" th:if="${reportPage.totalPages > 0}">
                         <ul class="pagination justify-content-center">
                             <li th:class="${1 == reportPage.number + 1} ? 'page-item active' : 'page-item'">
-                                <a th:href="@{/user/report(size=${reportPage.size}, page=${1})}"
+                                <a th:href="@{/admin(size=${reportPage.size}, page=${1})}"
                                    class="page-link">First</a>
                             </li>
 
                             <li class="page-item active" th:each="pageNumber : ${pageNumbers}"
                                 th:if="${reportPage.totalPages > 1}"
                                 th:class="${pageNumber == reportPage.number +1} ? 'page-item active' : 'page-item'" >
-                                <a th:href="@{/user/report(size=${reportPage.size}, page=${pageNumber})}"
+                                <a th:href="@{/admin(size=${reportPage.size}, page=${pageNumber})}"
                                    class="page-link" th:text="${pageNumber}"></a>
                             </li>
 
                             <li th:class="${reportPage.totalPages == reportPage.number + 1} ? 'page-item active' : 'page-item'">
-                                <a th:href="@{/user/report(size=${reportPage.size}, page=${reportPage.totalPages})}"
+                                <a th:href="@{/admin(size=${reportPage.size}, page=${reportPage.totalPages})}"
                                    class="page-link">Last</a>
                             </li>
                         </ul>
