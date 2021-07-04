@@ -6,101 +6,105 @@
 <head>
 </head>
 <body>
-  <section class="row" layout:fragment="content">
+<section class="row" layout:fragment="content">
     <div class="col mt-4">
-      <div class="card">
-        <div class="card-header">
-          <h2>List of Equipment</h2>
-        </div>
-        <div class="card-body">
-          <div th:if="${message != null}" class="alert alert-primary" role="alert">
-            <i>[[${message}]]</i>
-          </div>
-          <div class="row mt-2 mb-2">
-            <div class="col">
-              <form th:action="@{/admin/equipment}">
-                <div class="form-inline float-left">
-                  <label for="equipmentId">Equipment ID : </label>
-                  <input type="text" class="form-control ml-2" name="equipmentId" th:value="${equipmentId}"
-                         id="equipmentId" aria-describedby="helpId" placeholder="Enter name">
-                  <button class="btn btn-outline-primary ml-2">Search</button>
+        <div class="card">
+            <div class="card-header">
+                <h2>List of Equipment</h2>
+            </div>
+            <div class="card-body">
+                <div th:if="${message != null}" class="alert alert-primary" role="alert">
+                    <i>[[${message}]]</i>
                 </div>
-              </form>
-              <div class="float-right">
-                <a class="btn btn-outline-primary" th:href="@{/admin/equipment/add}">Add New Equipment</a>
-              </div>
-            </div>
-          </div>
-          <div class="row" th:if="${!equipmentPage.hasContent()}">
-            <div class="col">
-              <div class="alert alert-danger" role="alert">
-                <strong>No Equipment Found</strong>
-              </div>
-            </div>
-          </div>
-          <table class="table table-striped table-inverse" th:if="${equipmentPage.hasContent()}">
-            <thead class="thead-inverse">
-            <tr>
-              <th>Equipment ID</th>
-              <th>Equipment Name</th>
-              <th>Date Of Installation</th>
-              <th>Company</th>
-              <th>Room</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each=" equipment, iStat : ${equipmentPage.content}">
-              <td scope="row">[[${equipment.equipmentId}]]</td>
-              <td th:text="${equipment.equipmentName}"></td>
-              <td th:text="${equipment.dateOfInstallation}"></td>
-              <td th:text="${equipment.company}"></td>
-              <td th:text="${equipment.room.roomId}"></td>
-              <td>
-                <a th:href="@{'/admin/status/' + ${equipment.equipmentId}}" class="btn btn-outline-info"><i class="fas fa-arrow-alt-circle-right"></i></a>
-                <a th:href="@{'/admin/equipment/edit/' + ${equipment.equipmentId}}" class="btn btn-outline-warning"><i class="fas fa-edit"></i></a>
-                <a th:href="@{'/admin/equipment/delete/' + ${equipment.equipmentId}}" class="btn btn-outline-danger"><i class="fa fa-recycle"></i></a>
-              </td>
-            </tr>
+                <div class="row mt-2 mb-2">
+                    <div class="col">
+                        <form th:action="@{/admin/equipment}">
+                            <div class="form-inline float-left">
+                                <label for="equipmentId">Equipment ID : </label>
+                                <input type="text" class="form-control ml-2" name="equipmentId"
+                                       th:value="${equipmentId}"
+                                       id="equipmentId" aria-describedby="helpId" placeholder="Enter name">
+                                <button class="btn btn-outline-primary ml-2">Search</button>
+                            </div>
+                        </form>
+                        <div class="float-right">
+                            <a class="btn btn-outline-primary" th:href="@{/admin/equipment/add}">Add New Equipment</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" th:if="${!equipmentPage.hasContent()}">
+                    <div class="col">
+                        <div class="alert alert-danger" role="alert">
+                            <strong>No Equipment Found</strong>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-striped table-inverse" th:if="${equipmentPage.hasContent()}">
+                    <thead class="thead-inverse">
+                    <tr>
+                        <th>Equipment ID</th>
+                        <th>Equipment Name</th>
+                        <th>Date Of Installation</th>
+                        <th>Company</th>
+                        <th>Room</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each=" equipment, iStat : ${equipmentPage.content}">
+                        <td scope="row">[[${equipment.equipmentId}]]</td>
+                        <td th:text="${equipment.equipmentName}"></td>
+                        <td th:text="${equipment.dateOfInstallation}"></td>
+                        <td th:text="${equipment.company}"></td>
+                        <td th:text="${equipment.room.roomId}"></td>
+                        <td>
+                            <a th:href="@{'/admin/status/' + ${equipment.equipmentId}}" class="btn btn-outline-info"><i
+                                    class="fas fa-arrow-alt-circle-right"></i></a>
+                            <a th:href="@{'/admin/equipment/edit/' + ${equipment.equipmentId}}"
+                               class="btn btn-outline-warning"><i class="fas fa-edit"></i></a>
+                            <a th:href="@{'/admin/equipment/delete/' + ${equipment.equipmentId}}"
+                               class="btn btn-outline-danger"><i class="fa fa-recycle"></i></a>
+                        </td>
+                    </tr>
 
-            </tbody>
-          </table>
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer text-muted">
+                <form action="">
+                    <div class="form-inline float-left">
+                        <label for="size">Page size: </label>
+                        <select name="size" id="size" class="form-control ml-2" onchange="this.form.submit()">
+                            <option th:selected="${equipmentPage.size == 5}" value="5">5</option>
+                            <option th:selected="${equipmentPage.size == 10}" value="10">10</option>
+                            <option th:selected="${equipmentPage.size == 15}" value="15">15</option>
+                            <option th:selected="${equipmentPage.size == 20}" value="20">20</option>
+                            <option th:selected="${equipmentPage.size == 25}" value="25">25</option>
+                        </select>
+                    </div>
+                </form>
+                <nav aria-label="Page navigation" th:if="${equipmentPage.totalPages > 0}">
+                    <ul class="pagination justify-content-center">
+                        <li th:class="${1 == equipmentPage.number + 1} ? 'page-item active' : 'page-item'">
+                            <a th:href="@{/admin/equipment(equipmentId=${equipmentId}, size=${equipmentPage.size}, page=${1})}"
+                               class="page-link">First</a>
+                        </li>
+
+                        <li class="page-item active" th:each="pageNumber : ${pageNumbers}"
+                            th:if="${equipmentPage.totalPages > 1}"
+                            th:class="${pageNumber == equipmentPage.number +1} ? 'page-item active' : 'page-item'">
+                            <a th:href="@{/admin/equipment(equipmentId=${equipmentId}, size=${equipmentPage.size}, page=${pageNumber})}"
+                               class="page-link" th:text="${pageNumber}"></a>
+                        </li>
+
+                        <li th:class="${equipmentPage.totalPages == equipmentPage.number + 1} ? 'page-item active' : 'page-item'">
+                            <a th:href="@{/admin/equipment(equipmentId=${equipmentId}, size=${equipmentPage.size}, page=${equipmentPage.totalPages})}"
+                               class="page-link">Last</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
-        <div class="card-footer text-muted">
-          <form action="">
-            <div class="form-inline float-left">
-              <label for="size">Page size: </label>
-              <select name="size" id="size" class="form-control ml-2" onchange="this.form.submit()">
-                <option th:selected="${equipmentPage.size == 5}" value="5">5</option>
-                <option th:selected="${equipmentPage.size == 10}" value="10">10</option>
-                <option th:selected="${equipmentPage.size == 15}" value="15">15</option>
-                <option th:selected="${equipmentPage.size == 20}" value="20">20</option>
-                <option th:selected="${equipmentPage.size == 25}" value="25">25</option>
-              </select>
-            </div>
-          </form>
-          <nav aria-label="Page navigation" th:if="${equipmentPage.totalPages > 0}">
-            <ul class="pagination justify-content-center">
-              <li th:class="${1 == equipmentPage.number + 1} ? 'page-item active' : 'page-item'">
-                <a th:href="@{/admin/equipment(equipmentId=${equipmentId}, size=${equipmentPage.size}, page=${1})}"
-                   class="page-link">First</a>
-              </li>
-
-              <li class="page-item active" th:each="pageNumber : ${pageNumbers}"
-                  th:if="${equipmentPage.totalPages > 1}"
-                  th:class="${pageNumber == equipmentPage.number +1} ? 'page-item active' : 'page-item'" >
-                <a th:href="@{/admin/equipment(equipmentId=${equipmentId}, size=${equipmentPage.size}, page=${pageNumber})}"
-                   class="page-link" th:text="${pageNumber}"></a>
-              </li>
-
-              <li th:class="${equipmentPage.totalPages == equipmentPage.number + 1} ? 'page-item active' : 'page-item'">
-                <a th:href="@{/admin/equipment(equipmentId=${equipmentId}, size=${equipmentPage.size}, page=${equipmentPage.totalPages})}"
-                   class="page-link">Last</a>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </div>
     </div>
-  </section>
+</section>
 </body>
 </html>

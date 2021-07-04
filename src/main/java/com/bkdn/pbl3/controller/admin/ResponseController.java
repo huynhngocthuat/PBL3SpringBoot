@@ -61,7 +61,7 @@ public class ResponseController {
 
         responseService.save(entity);
         model.addAttribute("message", "Response is saved!");
-        return new ModelAndView("forward:/user/report",model);
+        return new ModelAndView("redirect:/admin",model);
     }
 
 }

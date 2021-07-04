@@ -6,12 +6,10 @@ import com.bkdn.pbl3.service.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -22,12 +20,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.security.Principal;
 import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("user/report")
@@ -50,6 +48,8 @@ public class ReportController {
     @Autowired
     ResponseService responseService;
 
+    @Autowired
+    AccountService accountService;
     @ModelAttribute("zones")
     public List<ZoneDto> getZones(){
         return zoneService.findAll().stream().map(item ->{
@@ -93,8 +93,16 @@ public class ReportController {
     }
 
     @GetMapping("edit/{reportId}")
-    public ModelAndView edit(ModelMap model, @PathVariable("reportId") Long reportId){
+    public ModelAndView edit(ModelMap model, @PathVariable("reportId") Long reportId, Principal principal){
         Optional<Report> opt = reportService.findById(reportId);
+        if(opt.get().getIsEdit()==false){
+            User loginedUser = (User) ((Authentication)principal).getPrincipal();
+            String userName = loginedUser.getUsername();
+            Account account = accountService.findByUserName(userName);
+            List<Report> list = reportService.findReportByAccount(account);
+            model.addAttribute("reports", list);
+            return new ModelAndView("user/report/listReportByAccount");
+        }
         ReportDto dto = new ReportDto();
         if(opt.isPresent()){
             Report entity = opt.get();
@@ -136,16 +144,18 @@ public class ReportController {
 
     @PostMapping("saveOrUpdate")
     public ModelAndView saveOrUpdate(ModelMap model, @RequestParam(name = "roomId", required = false) String roomId,
-                                     @Valid @ModelAttribute("report") ReportDto dto, BindingResult result) throws IOException {
+                                     @Valid @ModelAttribute("report") ReportDto dto, BindingResult result,
+                                    Principal principal) throws IOException {
         if(result.hasErrors()){
             return new ModelAndView("user/report/addOrEdit");
         }
+        User loginedUser =(User) ((Authentication)principal).getPrincipal();
+        Account accountReport = accountService.findByUserName(loginedUser.getUsername());
         long miliSeconds = System.currentTimeMillis();
         Date date = new Date(miliSeconds);
         dto.setReportedDate(date);
         dto.setReportStatus(0);
-        dto.setAccountId(2);
-
+        dto.setAccountId(accountReport.getAccountId());
         if(dto.getEditing()){
             String imageUpdate = null;
             if(!dto.getImageFile().isEmpty()){
@@ -204,11 +214,14 @@ public class ReportController {
         return new ModelAndView("redirect:/user/report",model);
     }
 
-//    @RequestMapping("")
-//    public String list(ModelMap model){
-//        List<Report> list = reportService.findAll();
-//        model.addAttribute("reports", list);
-//        return "/admin/report/list";
-//    }
+    @RequestMapping("")
+    public String list(ModelMap model, Principal principal){
+        User loginedUser = (User) ((Authentication)principal).getPrincipal();
+        String userName = loginedUser.getUsername();
+        Account account = accountService.findByUserName(userName);
+        List<Report> list = reportService.findReportByAccount(account);
+        model.addAttribute("reports", list);
+        return "/user/report/listReportByAccount";
+    }
 
 }

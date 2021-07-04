@@ -1,5 +1,6 @@
 package com.bkdn.pbl3.utils;
 
+import com.bkdn.pbl3.domain.Account;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
@@ -9,11 +10,8 @@ public class WebUtils {
     public static String toString(User user) {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("UserName:").append(user.getUsername());
-
         Collection<GrantedAuthority> authorities = user.getAuthorities();
         if (authorities != null && !authorities.isEmpty()) {
-            sb.append(" (");
             boolean first = true;
             for (GrantedAuthority a : authorities) {
                 if (first) {
@@ -23,7 +21,6 @@ public class WebUtils {
                     sb.append(", ").append(a.getAuthority());
                 }
             }
-            sb.append(")");
         }
         return sb.toString();
     }

@@ -33,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //Cross Site Request Forgery
         http.csrf().disable();
         //permit all
-        http.authorizeRequests().antMatchers("/login", "/", "/logout").permitAll();
+        http.authorizeRequests().antMatchers("/login", "/", "/logout","/admin/account/add","/admin/account/edit").permitAll();
         //trang cho user
         http.authorizeRequests().antMatchers("/user/**").access("hasRole('ROLE_USER')");
         //trang cho admin
@@ -47,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureUrl("/login?error=true")
                 .usernameParameter("username")
                 .passwordParameter("password")
-                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/");
+                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/logoutSuccessful");
         http.authorizeRequests().and()
                 .rememberMe().tokenRepository(this.persistentTokenRepository())
                 .tokenValiditySeconds(1 * 24 * 60 * 60);

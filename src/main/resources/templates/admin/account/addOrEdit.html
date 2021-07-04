@@ -7,8 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css"
+          integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
     <script src="/js/user.js"></script>
 </head>
 <body>
@@ -28,50 +30,59 @@
                         <input type="hidden" th:field="*{accountId}">
                         <input th:if="${account.isEdit}" type="hidden" th:field="*{passWord}">
                         <div class="form-group">
-                          <label for="userName">Username :</label>
-                          <input th:if="${account.isEdit}" th:field="*{userName}" type="text" class="form-control" name="userName" id="userNameUpdate" aria-describedby="userNameHid" readonly>
-                          <input th:unless="${account.isEdit}" th:field="*{userName}" type="text" class="form-control" name="userName" id="userName" aria-describedby="userNameHid">
-                          <small th:if="${#fields.hasErrors('accountId')}" id="userNameHid" class="form-text text-muted">Username is required</small>
+                            <label for="userName">Username :</label>
+                            <input th:if="${account.isEdit}" th:field="*{userName}" type="text" class="form-control"
+                                   name="userName" id="userNameUpdate" aria-describedby="userNameHid" readonly>
+                            <input th:unless="${account.isEdit}" th:field="*{userName}" type="text" class="form-control"
+                                   name="userName" id="userName" aria-describedby="userNameHid">
+                            <small th:if="${#fields.hasErrors('accountId')}" id="userNameHid"
+                                   class="form-text text-muted">Username is required</small>
                         </div>
                         <div th:if="${!account.isEdit}" class="form-group">
                             <label for="passWord">Password :</label>
-                            <input th:field="*{passWord}" type="password" class="form-control" name="passWord" id="passWord" aria-describedby="passWordHid">
-                            <small th:if="${#fields.hasErrors('passWord')}" id="passWordHid" class="form-text text-muted">Password is required</small>
+                            <input th:field="*{passWord}" type="password" class="form-control" name="passWord"
+                                   id="passWord" aria-describedby="passWordHid">
+                            <small th:if="${#fields.hasErrors('passWord')}" id="passWordHid"
+                                   class="form-text text-muted">Password is required</small>
                         </div>
                         <div th:if="${!account.isEdit}" class="form-group">
                             <label for="rePassWord">Repassword :</label>
-                            <input type="password" class="form-control" name="rePassWord" id="rePassWord" aria-describedby="rePassWordHid">
+                            <input type="password" class="form-control" name="rePassWord" id="rePassWord"
+                                   aria-describedby="rePassWordHid">
                             <small id="rePassWordHid" class="form-text text-muted">RePassword is required</small>
                         </div>
                         <div class="form-group">
                             <label for="fullName">Full Name :</label>
-                            <input th:field="*{fullName}" type="text" class="form-control" name="fullName" id="fullName" aria-describedby="fullNameHid">
-                            <small th:if="${#fields.hasErrors('fullName')}" id="fullNameHid" class="form-text text-muted">Full Name is required</small>
+                            <input th:field="*{fullName}" type="text" class="form-control" name="fullName" id="fullName"
+                                   aria-describedby="fullNameHid">
+                            <small th:if="${#fields.hasErrors('fullName')}" id="fullNameHid"
+                                   class="form-text text-muted">Full Name is required</small>
                         </div>
                         <div class="form-group">
                             <label for="faculty">Faculty :</label>
                             <select th:field="*{faculty}" class="form-control" name="faculty" id="faculty">
-                              <option value="Công nghệ thông tin">Công nghệ thông tin</option>
-                              <option value="Điện tử viễn thông">Điện tử viễn thông</option>
-                              <option value="Môi trường">Môi trường</option>
-                              <option value="Điện">Điện</option>
-                              <option value="Hoá">Hoá</option>
+                                <option value="Công nghệ thông tin">Công nghệ thông tin</option>
+                                <option value="Điện tử viễn thông">Điện tử viễn thông</option>
+                                <option value="Môi trường">Môi trường</option>
+                                <option value="Điện">Điện</option>
+                                <option value="Hoá">Hoá</option>
                             </select>
                         </div>
                         <div class="form-group">
-                          <label for="_class">Class :</label>
-                          <input th:field="*{classs}" type="text" class="form-control" name="_class" id="_class" aria-describedby="_classHid">
-                          <small th:if="${#fields.hasErrors('classs')}" id="_classHid" class="form-text text-muted">Class is required</small>
+                            <label for="_class">Class :</label>
+                            <input th:field="*{classs}" type="text" class="form-control" name="_class" id="_class"
+                                   aria-describedby="_classHid">
+                            <small th:if="${#fields.hasErrors('classs')}" id="_classHid" class="form-text text-muted">Class
+                                is required</small>
                         </div>
                     </div>
 
                     <div class="card-footer text-muted">
-                        <button type="reset" class="btn btn-secondary">Reset</button>
-                        <a th:href="@{/admin/account}" class="btn btn-success">List Account</a>
-                        <button class="btn btn-primary" onclick="checkPassword()"><i class="fas fa-save"></i>
+                        <button class="btn btn-primary float-right" onclick="checkPassword()"><i class="fas fa-save"></i>
                             <span th:if="${account.isEdit}">Update</span>
                             <span th:unless="${account.isEdit}">Save</span>
                         </button>
+                        <a th:if="${#request.userPrincipal != null}" th:href="@{/admin}" type="reset" class="btn btn-secondary float-right mr-2">Back</a>
                     </div>
                 </div>
             </form>
@@ -81,8 +92,14 @@
 </main>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
 </body>
 </html>

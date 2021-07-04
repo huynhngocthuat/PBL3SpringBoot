@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -36,9 +39,11 @@ public class AccountController {
         return "admin/account/addOrEdit";
     }
 
-    @GetMapping("edit/{accountId}")
-    public ModelAndView edit(ModelMap model, @PathVariable("accountId") Long accountId) {
-        Optional<Account> opt = accountService.findById(accountId);
+    @GetMapping("edit")
+    public ModelAndView edit(ModelMap model, Principal principal) {
+        User loginedUser = (User) ((Authentication)principal).getPrincipal();
+        Account account = accountService.findByUserName(loginedUser.getUsername());
+        Optional<Account> opt = accountService.findById(account.getAccountId());
         AccountDto dto = new AccountDto();
         if (opt.isPresent()) {
             Account entity = opt.get();
@@ -48,7 +53,7 @@ public class AccountController {
             return new ModelAndView("admin/account/addOrEdit", model);
         }
         model.addAttribute("message", "Account is not existed");
-        return new ModelAndView("forward:/admin/account", model);
+        return new ModelAndView("forward:/admin/account/edit", model);
     }
 
     @GetMapping("delete/{accountId}")
@@ -76,7 +81,7 @@ public class AccountController {
             accountService.save(entity);
         }
         model.addAttribute("message", "Account is saved!");
-        return new ModelAndView("redirect:/admin/account", model);
+        return new ModelAndView("redirect:/admin", model);
     }
 
 //    @RequestMapping("")

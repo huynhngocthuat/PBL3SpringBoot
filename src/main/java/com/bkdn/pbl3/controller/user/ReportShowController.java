@@ -49,14 +49,18 @@ public class ReportShowController {
     @GetMapping()
     public String paginated(ModelMap model,
                             @RequestParam("page") Optional<Integer> page,
-                            @RequestParam("size") Optional<Integer> size) {
-//        String userName = principal.getName();
-//        System.out.println(userName);
-//        User loginedUser = (User) ((Authentication) principal).getPrincipal();
-//
-//        String userInfo = WebUtils.toString(loginedUser);
-//        model.addAttribute("userInfo", userInfo);
-
+                            @RequestParam("size") Optional<Integer> size,
+                            Principal principal) {
+        if(principal!=null){
+        User loginedUser = (User) ((Authentication) principal).getPrincipal();
+        String role = WebUtils.toString(loginedUser);
+        boolean checkRole = false;
+        if(role.equals("ROLE_ADMIN")){
+            checkRole = true;
+        }
+        model.addAttribute("role", checkRole);
+        model.addAttribute("message", "Xin chào " + loginedUser.getUsername() + ", bạn đăng nhập với quyền là " + role);
+        }
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(5);
         PagedListHolder<ReportShow> resultPage = new PagedListHolder<>(reportService.getReportShow());

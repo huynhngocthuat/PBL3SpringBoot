@@ -5,102 +5,102 @@
 <head>
 </head>
 <body>
-  <section class="row" layout:fragment="content">
+<section class="row" layout:fragment="content">
     <div class="col mt-4">
-      <div class="card">
-        <div class="card-header">
-          <h2>List of Account</h2>
-        </div>
-        <div class="card-body">
-          <div th:if="${message != null}" class="alert alert-primary" role="alert">
-            <i>[[${message}]]</i>
-          </div>
-          <div class="row mt-2 mb-2">
-            <div class="col">
-              <form th:action="@{/admin/account}">
-                <div class="form-inline float-left">
-                  <label for="fullName">Full Name : </label>
-                  <input type="text" class="form-control ml-2" name="fullName" th:value="${fullName}"
-                         id="fullName" aria-describedby="helpId" placeholder="Enter name">
-                  <button class="btn btn-outline-primary ml-2">Search</button>
+        <div class="card">
+            <div class="card-header">
+                <h2>List of Account</h2>
+            </div>
+            <div class="card-body">
+                <div th:if="${message != null}" class="alert alert-primary" role="alert">
+                    <i>[[${message}]]</i>
                 </div>
-              </form>
-              <div class="float-right">
-                <a class="btn btn-outline-primary" th:href="@{/admin/account/add}">Add New Room</a>
-              </div>
-            </div>
-          </div>
-          <div class="row" th:if="${!accountPage.hasContent()}">
-            <div class="col">
-              <div class="alert alert-danger" role="alert">
-                <strong>No Account Found</strong>
-              </div>
-            </div>
-          </div>
-          <table class="table table-striped table-inverse" th:if="${accountPage.hasContent()}">
-            <thead class="thead-inverse">
-            <tr>
-              <th>Account ID</th>
-              <th>Username</th>
-              <th>Full Name</th>
-              <th>Class</th>
-              <th>Faculty</th>
-              <th>Role</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each=" account, iStat : ${accountPage.content}">
-              <td scope="row">[[${account.accountId}]]</td>
-              <td th:text="${account.userName}"></td>
-              <td th:text="${account.fullName}"></td>
-              <td th:text="${account.classs}"></td>
-              <td th:text="${account.faculty}"></td>
-              <td th:text="${account.role}"></td>
-              <td>
-                <a th:href="@{'/admin/account/edit/' + ${account.accountId}}" class="btn btn-outline-warning"><i class="fas fa-edit"></i></a>
-                <a th:href="@{'/admin/account/delete/' + ${account.accountId}}" class="btn btn-outline-danger"><i class="fa fa-recycle"></i></a>
-              </td>
-            </tr>
+                <div class="row mt-2 mb-2">
+                    <div class="col">
+                        <form th:action="@{/admin/account}">
+                            <div class="form-inline float-left">
+                                <label for="fullName">Full Name : </label>
+                                <input type="text" class="form-control ml-2" name="fullName" th:value="${fullName}"
+                                       id="fullName" aria-describedby="helpId" placeholder="Enter name">
+                                <button class="btn btn-outline-primary ml-2">Search</button>
+                            </div>
+                        </form>
+                        <div class="float-right">
+                            <a class="btn btn-outline-primary" th:href="@{/admin/account/add}">Add New Account</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" th:if="${!accountPage.hasContent()}">
+                    <div class="col">
+                        <div class="alert alert-danger" role="alert">
+                            <strong>No Account Found</strong>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-striped table-inverse" th:if="${accountPage.hasContent()}">
+                    <thead class="thead-inverse">
+                    <tr>
+                        <th>Account ID</th>
+                        <th>Username</th>
+                        <th>Full Name</th>
+                        <th>Class</th>
+                        <th>Faculty</th>
+                        <th>Role</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each=" account, iStat : ${accountPage.content}">
+                        <td scope="row">[[${account.accountId}]]</td>
+                        <td th:text="${account.userName}"></td>
+                        <td th:text="${account.fullName}"></td>
+                        <td th:text="${account.classs}"></td>
+                        <td th:text="${account.faculty}"></td>
+                        <td th:text="${account.role}"></td>
+                        <td>
+                            <a th:href="@{'/admin/account/delete/' + ${account.accountId}}"
+                               class="btn btn-outline-danger"><i class="fa fa-recycle"></i></a>
+                        </td>
+                    </tr>
 
-            </tbody>
-          </table>
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer text-muted">
+                <form action="">
+                    <div class="form-inline float-left">
+                        <label for="size">Page size: </label>
+                        <select name="size" id="size" class="form-control ml-2" onchange="this.form.submit()">
+                            <option th:selected="${accountPage.size == 5}" value="5">5</option>
+                            <option th:selected="${accountPage.size == 10}" value="10">10</option>
+                            <option th:selected="${accountPage.size == 15}" value="15">15</option>
+                            <option th:selected="${accountPage.size == 20}" value="20">20</option>
+                            <option th:selected="${accountPage.size == 25}" value="25">25</option>
+                        </select>
+                    </div>
+                </form>
+                <nav aria-label="Page navigation" th:if="${accountPage.totalPages > 0}">
+                    <ul class="pagination justify-content-center">
+                        <li th:class="${1 == accountPage.number + 1} ? 'page-item active' : 'page-item'">
+                            <a th:href="@{/admin/account(fullName=${fullName}, size=${accountPage.size}, page=${1})}"
+                               class="page-link">First</a>
+                        </li>
+
+                        <li class="page-item active" th:each="pageNumber : ${pageNumbers}"
+                            th:if="${accountPage.totalPages > 1}"
+                            th:class="${pageNumber == accountPage.number +1} ? 'page-item active' : 'page-item'">
+                            <a th:href="@{/admin/account(fullName=${fullName}, size=${accountPage.size}, page=${pageNumber})}"
+                               class="page-link" th:text="${pageNumber}"></a>
+                        </li>
+
+                        <li th:class="${accountPage.totalPages == accountPage.number + 1} ? 'page-item active' : 'page-item'">
+                            <a th:href="@{/admin/account(fullName=${fullName}, size=${accountPage.size}, page=${accountPage.totalPages})}"
+                               class="page-link">Last</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
-        <div class="card-footer text-muted">
-          <form action="">
-            <div class="form-inline float-left">
-              <label for="size">Page size: </label>
-              <select name="size" id="size" class="form-control ml-2" onchange="this.form.submit()">
-                <option th:selected="${accountPage.size == 5}" value="5">5</option>
-                <option th:selected="${accountPage.size == 10}" value="10">10</option>
-                <option th:selected="${accountPage.size == 15}" value="15">15</option>
-                <option th:selected="${accountPage.size == 20}" value="20">20</option>
-                <option th:selected="${accountPage.size == 25}" value="25">25</option>
-              </select>
-            </div>
-          </form>
-          <nav aria-label="Page navigation" th:if="${accountPage.totalPages > 0}">
-            <ul class="pagination justify-content-center">
-              <li th:class="${1 == accountPage.number + 1} ? 'page-item active' : 'page-item'">
-                <a th:href="@{/admin/account(fullName=${fullName}, size=${accountPage.size}, page=${1})}"
-                   class="page-link">First</a>
-              </li>
-
-              <li class="page-item active" th:each="pageNumber : ${pageNumbers}"
-                  th:if="${accountPage.totalPages > 1}"
-                  th:class="${pageNumber == accountPage.number +1} ? 'page-item active' : 'page-item'" >
-                <a th:href="@{/admin/account(fullName=${fullName}, size=${accountPage.size}, page=${pageNumber})}"
-                   class="page-link" th:text="${pageNumber}"></a>
-              </li>
-
-              <li th:class="${accountPage.totalPages == accountPage.number + 1} ? 'page-item active' : 'page-item'">
-                <a th:href="@{/admin/account(fullName=${fullName}, size=${accountPage.size}, page=${accountPage.totalPages})}"
-                   class="page-link">Last</a>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </div>
     </div>
-  </section>
+</section>
 </body>
 </html>

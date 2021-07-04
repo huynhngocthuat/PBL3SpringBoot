@@ -15,9 +15,17 @@
 </head>
 <body>
 <div class="container">
+    <div th:if="${message != null}" class="alert alert-primary" role="alert">
+        <i>[[${message}]]</i>
+    </div>
     <div class="content mt-3">
-        <a th:href="@{/login}" class="float-right btn btn-primary">Login</a>
-<!--        <button th:if="${#request.userPrincipal != null}" th:href="@{/logout}" class="float-right btn btn-primary">Logout</button>-->
+<!--        <p th:if="${#request.userPrincipal.authorities=='[ROLE_ADMIN]'}">đ</p>-->
+<!--        <p th:unless="${#request.userPrincipal.authorities}">user</p>-->
+        <a th:if="${#request.userPrincipal == null}" th:href="@{/login}" class="float-right ml-2 btn btn-primary">Login</a>
+        <a th:if="${#request.userPrincipal == null}" th:href="@{/admin/account/add}" class="float-right ml-2 btn btn-primary">Sign up</a>
+        <a th:if="${#request.userPrincipal != null}" th:href="@{/logout}" class="float-right ml-2 btn btn-primary">Logout</a>
+        <a th:if="${role}" th:href="@{/admin}" class="float-right btn btn-primary">Admin</a>
+        <a th:if="${role==false}" th:href="@{/user/report}" class="float-right btn btn-primary">User</a>
         <h1>Management of classroom equipment DUT</h1>
     </div>
     <form class="row gy-2 gx-3 align-items-center mt-4 mb-4">
