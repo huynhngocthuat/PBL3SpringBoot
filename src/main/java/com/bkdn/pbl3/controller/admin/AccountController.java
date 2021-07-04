@@ -41,7 +41,7 @@ public class AccountController {
 
     @GetMapping("edit")
     public ModelAndView edit(ModelMap model, Principal principal) {
-        User loginedUser = (User) ((Authentication)principal).getPrincipal();
+        User loginedUser = (User) ((Authentication) principal).getPrincipal();
         Account account = accountService.findByUserName(loginedUser.getUsername());
         Optional<Account> opt = accountService.findById(account.getAccountId());
         AccountDto dto = new AccountDto();
@@ -64,13 +64,25 @@ public class AccountController {
     }
 
     @PostMapping("saveOrUpdate")
-    public ModelAndView saveOrUpdate(ModelMap model, @RequestParam(name = "rePassWord", required = false) String rePassWord, @Valid @ModelAttribute("account") AccountDto dto, BindingResult result) {
+    public ModelAndView saveOrUpdate(ModelMap model, @RequestParam(name = "rePassWord", required = false) String rePassWord,
+                                     @Valid @ModelAttribute("account") AccountDto dto, BindingResult result) {
+        String newUserName = dto.getUserName();
         if (result.hasErrors()) {
             return new ModelAndView("admin/account/addOrEdit");
         }
+        //nêu edit = true thì hiểu là đang edit
         if (dto.getIsEdit()) {
             accountService.updateAccount(dto.getClasss(), dto.getFaculty(), dto.getFullName(), dto.getAccountId());
         } else {
+            // Nêu add new account mà trùng username thì sẽ thông báo tới người dùng
+            List<Account> list = accountService.findAll();
+            for(Account account : list){
+                String userName = account.getUserName();
+                if(userName.equals(newUserName)){
+                    model.addAttribute("message", "Tài khoản đã tồn tại !!!");
+                    return new ModelAndView("admin/account/addOrEdit");
+                }
+            }
             String password = dto.getPassWord();
             if (!rePassWord.equals(password)) {
                 return new ModelAndView("admin/account/addOrEdit");
@@ -81,7 +93,7 @@ public class AccountController {
             accountService.save(entity);
         }
         model.addAttribute("message", "Account is saved!");
-        return new ModelAndView("redirect:/admin", model);
+        return new ModelAndView("redirect:/user/report", model);
     }
 
 //    @RequestMapping("")
@@ -96,16 +108,20 @@ public class AccountController {
                                   @RequestParam(name = "fullName", required = false) String fullName,
                                   @RequestParam("page") Optional<Integer> page,
                                   @RequestParam("size") Optional<Integer> size) {
+        //Nếu k có giá trị thì sẽ lấy giá trị mặc định current page = 1 và số record sẽ là 5
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(5);
+        //Thêm các thông số vào pageable
         Pageable pageable = PageRequest.of(currentPage - 1, pageSize, Sort.by("fullName"));
         Page<Account> resultPage;
         if (StringUtils.hasText(fullName)) {
             resultPage = accountService.findByFullNameContaining(fullName, pageable);
             model.addAttribute("fullName", fullName);
         } else {
+            //File theo các giá trị mà pageable đã có
             resultPage = accountService.findAll(pageable);
         }
+        //tìm những trang gần kế trang được chọn để hiện thị trong phạm vi là 2
         int totalPages = resultPage.getTotalPages();
         if (totalPages > 0) {
             int start = Math.max(1, currentPage - 2);
@@ -114,6 +130,7 @@ public class AccountController {
                 if (end == totalPages) start = end - 5;
                 else if (start == 1) end = start + 5;
             }
+            //Lấy list number những trang liền từ start -> end bao gồm cả trang đang chọn là số đứng giữa
             List<Integer> pageNumbers = IntStream.rangeClosed(start, end)
                     .boxed()
                     .collect(Collectors.toList());

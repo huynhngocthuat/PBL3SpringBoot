@@ -25,10 +25,6 @@ import java.util.stream.IntStream;
 @Controller
 public class homeController {
     @Autowired
-    private AccountService accountService;
-    @Autowired
-    private HttpSession session;
-    @Autowired
     private ReportService reportService;
 
     @GetMapping("/login")
@@ -40,6 +36,7 @@ public class homeController {
     public String logoutSuccessfulPage(ModelMap model,
                                        @RequestParam("page") Optional<Integer> page,
                                        @RequestParam("size") Optional<Integer> size) {
+        //Thiệt lập lại dữ liệu của form main sau khi log out
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(5);
         PagedListHolder<ReportShow> resultPage = new PagedListHolder<>(reportService.getReportShow());

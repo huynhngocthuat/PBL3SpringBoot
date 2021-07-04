@@ -33,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //Cross Site Request Forgery
         http.csrf().disable();
         //permit all
-        http.authorizeRequests().antMatchers("/login", "/", "/logout","/admin/account/add","/admin/account/edit").permitAll();
+        http.authorizeRequests().antMatchers("/login", "/", "/logout","/admin/account/add","/admin/account/edit", "/admin/account/saveOrUpdate").permitAll();
         //trang cho user
         http.authorizeRequests().antMatchers("/user/**").access("hasRole('ROLE_USER')");
         //trang cho admin

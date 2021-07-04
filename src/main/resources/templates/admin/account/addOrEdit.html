@@ -16,6 +16,9 @@
 <body>
 <main class="container">
     <header class="row text-center">
+        <div th:if="${message != null}" class="alert alert-primary" role="alert">
+            <i>[[${message}]]</i>
+        </div>
     </header>
     <section class="row">
         <div class="col-6 offset-3 mt-4">

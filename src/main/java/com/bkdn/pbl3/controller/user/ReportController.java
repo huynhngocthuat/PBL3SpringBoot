@@ -50,6 +50,7 @@ public class ReportController {
 
     @Autowired
     AccountService accountService;
+    //Xét các giá trị trong cbb để tạo mới một report
     @ModelAttribute("zones")
     public List<ZoneDto> getZones(){
         return zoneService.findAll().stream().map(item ->{
@@ -94,15 +95,18 @@ public class ReportController {
 
     @GetMapping("edit/{reportId}")
     public ModelAndView edit(ModelMap model, @PathVariable("reportId") Long reportId, Principal principal){
+        //Kiểm tra xem report đã được phản hồi hay chưa
         Optional<Report> opt = reportService.findById(reportId);
         if(opt.get().getIsEdit()==false){
             User loginedUser = (User) ((Authentication)principal).getPrincipal();
             String userName = loginedUser.getUsername();
             Account account = accountService.findByUserName(userName);
             List<Report> list = reportService.findReportByAccount(account);
+            model.addAttribute("name", account.getFullName());
             model.addAttribute("reports", list);
             return new ModelAndView("user/report/listReportByAccount");
         }
+        //Nếu chưa phản hồi có thể edit
         ReportDto dto = new ReportDto();
         if(opt.isPresent()){
             Report entity = opt.get();
@@ -118,6 +122,7 @@ public class ReportController {
         return new ModelAndView("forward:/user/report",model);
     }
 
+    //Load image trong report
     @GetMapping("images/{filename:.+}")
     @ResponseBody
     public ResponseEntity<Resource> serveFile(@PathVariable String filename){
@@ -146,9 +151,11 @@ public class ReportController {
     public ModelAndView saveOrUpdate(ModelMap model, @RequestParam(name = "roomId", required = false) String roomId,
                                      @Valid @ModelAttribute("report") ReportDto dto, BindingResult result,
                                     Principal principal) throws IOException {
+        //Nếu không đúng định dạng trong file DTO thì sẽ báo lỗi
         if(result.hasErrors()){
             return new ModelAndView("user/report/addOrEdit");
         }
+        //Tìm kiếm account nào đang create report
         User loginedUser =(User) ((Authentication)principal).getPrincipal();
         Account accountReport = accountService.findByUserName(loginedUser.getUsername());
         long miliSeconds = System.currentTimeMillis();
@@ -156,6 +163,7 @@ public class ReportController {
         dto.setReportedDate(date);
         dto.setReportStatus(0);
         dto.setAccountId(accountReport.getAccountId());
+        //Nếu editing = true thì sẽ hiểu là đang edit report
         if(dto.getEditing()){
             String imageUpdate = null;
             if(!dto.getImageFile().isEmpty()){
@@ -175,6 +183,7 @@ public class ReportController {
             }
             reportService.updateReport(imageUpdate, dto.getNote(), dto.getReportedDate(), dto.getEquipmentId(), dto.getStatusId(), dto.getReportId());
         }
+        // false thì sẽ tạo một report mới
         else {
             Report entity = new Report();
             BeanUtils.copyProperties(dto,entity);
@@ -220,6 +229,7 @@ public class ReportController {
         String userName = loginedUser.getUsername();
         Account account = accountService.findByUserName(userName);
         List<Report> list = reportService.findReportByAccount(account);
+        model.addAttribute("name", account.getFullName());
         model.addAttribute("reports", list);
         return "/user/report/listReportByAccount";
     }
