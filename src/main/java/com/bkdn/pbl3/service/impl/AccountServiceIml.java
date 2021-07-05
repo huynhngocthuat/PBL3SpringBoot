@@ -80,4 +80,13 @@ public class AccountServiceIml implements AccountService {
     public Page<Account> findByFullNameContaining(String fullName, Pageable pageable) {
         return accountRepository.findByFullNameContaining(fullName, pageable);
     }
+
+    @Override
+    @Transactional
+    @Query(value = "UPDATE account SET pass_word = ?1 WHERE account_id = ?2", nativeQuery = true)
+    @Modifying
+    public int updatePassword(String oldPassword, long accountId) {
+        return accountRepository.updatePassword(oldPassword, accountId);
+    }
+
 }

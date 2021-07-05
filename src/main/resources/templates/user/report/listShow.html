@@ -21,8 +21,8 @@
     <div class="content mt-3">
 <!--        <p th:if="${#request.userPrincipal.authorities=='[ROLE_ADMIN]'}">đ</p>-->
 <!--        <p th:unless="${#request.userPrincipal.authorities}">user</p>-->
-        <a th:if="${#request.userPrincipal == null}" th:href="@{/login}" class="float-right ml-2 btn btn-primary">Login</a>
         <a th:if="${#request.userPrincipal == null}" th:href="@{/admin/account/add}" class="float-right ml-2 btn btn-primary">Sign up</a>
+        <a th:if="${#request.userPrincipal == null}" th:href="@{/login}" class="float-right ml-2 btn btn-primary">Login</a>
         <a th:if="${#request.userPrincipal != null}" th:href="@{/logout}" class="float-right ml-2 btn btn-primary">Logout</a>
         <a th:if="${role}" th:href="@{/admin}" class="float-right btn btn-primary">Admin</a>
         <a th:if="${role==false}" th:href="@{/user/report}" class="float-right btn btn-primary">User</a>

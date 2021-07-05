@@ -1,6 +1,7 @@
 package com.bkdn.pbl3.controller;
 
 import com.bkdn.pbl3.domain.Account;
+import com.bkdn.pbl3.model.AccountDto;
 import com.bkdn.pbl3.model.LoginDto;
 import com.bkdn.pbl3.model.ReportShow;
 import com.bkdn.pbl3.service.AccountService;
@@ -9,7 +10,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PagedListHolder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -26,6 +32,10 @@ import java.util.stream.IntStream;
 public class homeController {
     @Autowired
     private ReportService reportService;
+    @Autowired
+    private AccountService accountService;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping("/login")
     public String login(ModelMap model){
@@ -67,5 +77,30 @@ public class homeController {
         return "user/report/listShow";
     }
 
+    @PostMapping("/changePassword")
+    public ModelAndView changePassword(ModelMap model,
+                                       @RequestParam(name = "oldPassword") String oldPassword,
+                                       @RequestParam(name = "newPassword") String newPassword,
+                                       @RequestParam(name = "reNewPassword") String reNewPassword,
+                                       Principal principal){
+        User loginedUser = (User) ((Authentication)principal).getPrincipal();
+        Account account = accountService.findByUserName(loginedUser.getUsername());
 
+        if(bCryptPasswordEncoder.matches(oldPassword, account.getPassWord())==false){
+            model.addAttribute("message", "Bạn đã nhập mật khẩu cũ sai !!!");
+            return new ModelAndView("changePassword", model);
+        }
+        if(newPassword.equals(reNewPassword)==false){
+            model.addAttribute("message", "Mật khẩu không trùng nhau !");
+            return new ModelAndView("changePassword", model);
+        }
+        accountService.updatePassword(bCryptPasswordEncoder.encode(newPassword), account.getAccountId());
+        model.addAttribute("message", "Đổi mật khẩu thành công !");
+        return new ModelAndView("redirect:/admin/account/edit", model);
+    }
+
+    @GetMapping("/changePassword")
+    public String changePassword() {
+        return "changePassword";
+    }
 }

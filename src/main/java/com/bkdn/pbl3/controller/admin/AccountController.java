@@ -70,7 +70,7 @@ public class AccountController {
         if (result.hasErrors()) {
             return new ModelAndView("admin/account/addOrEdit");
         }
-        //nêu edit = true thì hiểu là đang edit
+        //nêu isEdit = true thì hiểu là đang edit
         if (dto.getIsEdit()) {
             accountService.updateAccount(dto.getClasss(), dto.getFaculty(), dto.getFullName(), dto.getAccountId());
         } else {

@@ -34,4 +34,9 @@ public interface AccountService {
     void deleteById(Long aLong);
 
     Page<Account> findByFullNameContaining(String fullName, Pageable pageable);
+
+    @Transactional
+    @Query(value = "UPDATE account SET pass_word = ?1 WHERE account_id = ?2", nativeQuery = true)
+    @Modifying
+    int updatePassword(String oldPassword, long accountId);
 }
